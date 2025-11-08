@@ -35,4 +35,24 @@ ex) git clone
 
 ![](C:\Users\82105\AppData\Roaming\marktext\images\2025-11-08-18-39-54-image.png)
 
+###### status
+
+: 현재 로컬 작업디렉토리 형상 상태 확인
+
+
+
+
+
 ###### add
+
+: 스테이징 영역에 임시 저장
+
+```git
+git add .          # 변경사항 전체 add
+git add 파일명      # 확장자까지 써줘야하며 특정 파일만 add
+                   # ex) git add test.txt
+```
+
+
+
+###### commit
