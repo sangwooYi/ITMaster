@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .table1 {
+            border-collapse: collapse;
+            width: 60%;
+            height: 100px;
+            /* margin 에서 auto 는 정중앙에 배치하겠다는 의미 값이 두개이므로 위아래는 8px , 좌우는 정중앙에 하겠다는 선언*/
+            margin: 10px auto;
+            border: 1px solid black;
+            
+        }
+        th, td {
+            padding: 10px;
+            border: 2px dashed black;
+            background-color: rgba(80, 200, 210, 0.7);
+        }
+
+        tr:nth-child(2n) {
+            background-color: rgb(153, 255, 51);
+        }
+
+        th:hover, td:hover {
+            background-color: tomato;
+            border: 3px solid rgb(176, 102, 255);
+            cursor: pointer;
+        }
+
+        .div1 {
+            width: 100vw;
+            margin: 1vw;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>[ 박스 모델 ]</h1>
+    <table class="table1">
+        <tr>
+            <th>ㅁㅁㅁㅁㅁ</th>
+            <th>ㅁㅁㅁㅁㅁ</th>
+            <th>ㅁㅁㅁㅁㅁ</th>
+        </tr>
+        <tr>
+            <td>ㅁㅁㅁㅁㅁ</td>
+            <td>ㅁㅁㅁㅁㅁ</td>
+            <td>ㅁㅁㅁㅁㅁ</td>
+        </tr>
+        <tr>
+            <td>ㅁㅁㅁㅁㅁ</td>
+            <td>ㅁㅁㅁㅁㅁ</td>
+            <td>ㅁㅁㅁㅁㅁ</td>
+        </tr>
+        <tr>
+            <td>ㅁㅁㅁㅁㅁ</td>
+            <td>ㅁㅁㅁㅁㅁ</td>
+            <td>ㅁㅁㅁㅁㅁ</td>
+        </tr>
+        <tr>
+            <td>ㅁㅁㅁㅁㅁ</td>
+            <td>ㅁㅁㅁㅁㅁ</td>
+            <td>ㅁㅁㅁㅁㅁ</td>
+        </tr>
+    </table>
+    <hr>
+    <div class="div1">
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+        Exercitationem, veniam perspiciatis animi voluptatum nesciunt
+    </div>
+
+    <div>
+        <button><a href="../home.html">홈으로</a></button>
+    </div>        
+</body>
+</html>

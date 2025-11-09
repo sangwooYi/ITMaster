@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRkU0BR2no36LRsxt8BqXVk_soTAn3lkaFvNA&s">
+    <title>Document</title>
+
+    <style>
+        a {
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>[ 제어문, 반복문 ]</h1> 
+    <!-- 이렇게도 내부 자바스크립투 호출 가능 -->
+    <p><a href="javascript:iftest()">if 문 1</a></p>
+    <p><a href="javascript:iftest2()">if 문 2</a></p>
+    <p><a href="javascript:switchTest()">switch 문</a></p>
+    <p><a href="javascript:forTest()">for 문</a></p>
+    <p><a href="javascript:forTest2()">for2 문</a></p>
+     <p><a href="javascript:whileTest()">while 문</a></p>
+
+
+    <script>
+        function iftest() {
+
+            // 참고 var는 호이스팅이 되나, const/let은 호이스팅 안됨
+            // var는 함수에서 샤용되면 함수 Scope 를 따르나, const / let 은 블록 스코프를 따른다.
+            // 따라서 arrow function 사용할 때는 무조건 let / const 를 사용해야함 var 는 무조건 오류 발생
+            const age = prompt("나이 ?");
+
+            // isNaN -> 현재 문자열이 숫자로 바뀔수 있는지 체크해주는 함수! 
+            // true면 숫자형태가 아닌거 Not a Number 이런의미
+            if (isNaN(age)) {
+                alert("숫자만 입력해라");
+                return;
+            }
+
+            if (Number(age) >= 20) {
+                alert("성인입니다.");
+            } else {
+                alert("미자입니다.");
+            }
+        }
+
+        function iftest2() {
+
+            let score = prompt("성적 입력 0 ~ 100 사이로 입력");
+            console.log(score);
+            // 유효성 체크
+            if (!isPromptValueNumber(score, false)) {
+                return;
+            }
+
+            score = Number(score);
+
+            if (score > 100) {
+                alert("장난치냐... 100점 미만으로");
+                return;
+            }
+
+            if (score >= 90) {
+                alert("A");
+            } else if (score >= 80) {
+                alert("B");
+            } else if (score >= 70) {
+                alert("C");
+            } else if (score >= 60){
+                alert("D");
+            } else {
+                alert("F");
+            }
+            
+        }
+
+
+        function switchTest() {
+            const n = prompt("번호를 입력하세요");
+
+            if (!isPromptValueNumber(n, false)) {
+                return;
+            }
+            const num = Number(n);
+            switch(num) {
+                case 1: alert("1번 선택");
+                        break;
+                case 2: alert("2번 선택");
+                        break;
+                case 3: alert("3번 선택");
+                        break;
+                default: alert("그 이외의 숫자");
+                        break;                                                                        
+            }
+
+        }
+
+        function forTest() {
+            
+            const arr = [10, 20, 30, 40, 50];
+            
+            for (let i = 0; i < arr.length; i++) {
+                console.log(arr[i]);
+            }
+
+            console.log("=========================================================");
+            // forEach 기본 형태, 여기선 of 를 사용
+            for (let num of arr) {
+                console.log(num);
+            }
+            console.log("=========================================================");
+            // forEach 여기선 in 를 사용 => num 에는 인덱스가 나옴
+            for (let num in arr) {
+                console.log(num);
+                // 따라서 이때 value 를 꺼냈끄려면 arr[num] 으로 하면 된다.
+                // for ... of 문에서는 인덱스를 사용 못하기 때문에 이부분을 보완하기 위해 등장한 친구임
+            }
+
+            /*
+            중복된 for 문 한번에 탈출하는 방법
+            out:
+            for (let i = 0; i < 10; i++) {
+                for (let j = 0; j < 10; j++) {
+                    if (j == 3) {
+                        break out;  // out <- 이건 그냥 변수명일뿐임
+                    }
+                }
+            }
+            */
+        }
+
+        function forTest2() {
+            
+            let total = 0;
+
+            for (let idx = 0; idx < 5; idx++) {
+
+                let inputStr = prompt("정수를 아무거나 입력해 주세요");
+
+                if (!isPromptValueNumber(inputStr, true)) {
+                    return;
+                }
+                inputStr = Number(inputStr);
+                total += inputStr;
+            }
+
+            alert(`최종 결과는 ${total}`);
+        }
+
+        function whileTest() {
+
+            const numArr = [];
+
+            while(true) {
+
+                let num = prompt("정수를 입력해 주세요, 끝내려면 그냥 바로 확인 클릭");
+
+                // 이 순간이 합계 구하는 타이밍
+                if (num === "") {
+                    break;
+                }
+                // 종료하지말고 그냥 재입력 받기
+                if (!isPromptValueNumber(num, true)) {
+                    continue;
+                }
+
+                numArr.push(Number(num));
+            }
+
+            let resStr = "";
+            let total = 0;            
+
+            for (let idx in numArr) {
+
+                const curNum = numArr[idx];
+
+                if (idx == 0) {
+                    resStr += curNum;
+                } else {
+                    resStr += ` + ${curNum}`;
+                }
+                total += curNum;
+            }
+            resStr += ` = ${total} 입니다.`
+
+            alert(resStr);
+        }
+
+        // 숫자 입력 유효성 체크
+        function isPromptValueNumber(value, chkInteger) {    
+
+            // prompt 는 "취소" 누르면 null 반환, 그냥 빈칸으로 확인누르면 ""를 반환한다.
+            if (value == null || value == undefined) {
+                return false;
+            }
+
+            if (value.trim() == "") {
+                alert("뭐라도 입력해..");
+                return false;
+            }
+
+            // isNaN 이 true 면 숫자타입이 아닌 것
+            if (isNaN(value)) {
+                alert("숫자만 입력하라고");
+                return false;
+            }
+
+            if (chkInteger) {
+                if (Math.abs(Number(value)%1) !== 0) {
+                    alert("정수만 입력해주세요.");
+                    return false;
+                }
+            }
+
+            return true;
+        }
+        
+    </script>    
+</body>
+</html>

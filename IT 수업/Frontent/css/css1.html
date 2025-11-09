@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS</title>
+    <style>
+        /* @font-face 사용방법 이렇게 가져온 다음에 이 font-family 값만 적용하려는 스타일에다가 갖다 쓰면 됨 */
+        @font-face {
+            font-family: 'NamyangjuUnheo';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2510-2@1.0/NYJUnheo.woff2') format('woff2');
+            font-weight: normal;
+            font-display: swap;
+        }    
+        /* 전체 적용은 아스테리스크 (*) */
+        * {   
+        }
+        /* 태그 지정 , 로 나열하면 함꼐 적용 됨 */
+        h1, h2 {
+            color: red;
+        }
+        p {
+            color: blue;
+        }
+        /* ID 선택자 애초에 HTML 태그에서 id 태그는 그 페이지에서 하나만 존재해야함 */
+        #yellowtext {
+            color: rgb(220, 220, 29);
+        }
+
+        /* 클래스 선택자 재활용하려면 클래스 선택자 사용 */
+        .greentext {
+            color: green;
+        }
+        .largetext {
+            font-size: 30px;
+        }
+        .slargetext {
+            font-size: 20px;
+        }
+        /* 이런식으로 접근 가능, 자손 선택자 
+        조심할때 동일 레벨에서 세부적으로 들어가는경우는 붙여줘야한다. 
+        div.div-container 는 div태그의 div-container 를 찾는것 
+        div .div-container는 div태그 하위의 태그중 div-container 클래스를 찾는 것*/
+        div.div-container blockquote p:nth-child(2){
+            font-family: 'NamyangjuUnheo';
+            font-size: 20px;
+        }
+        div .div-container {
+            font-size: 10px;
+        }
+        /* > 는 바로 아래 depth 에서만 체크하는 것 ( 단순 띄어쓰기는 하위 전체 div p 와 div > p 의 차이) */
+        div > p {
+            font-weight: 800;
+        }
+        div p {
+            font-style: italic;
+        }
+        /* 속성 선택자 */
+        input[type="password"] {
+            border: 3px solid tomato;
+        }
+        p > a {
+            text-decoration: none;
+        }
+        /* 가상 클래스 */
+        p > a:visited{
+            color: rgb(13, 185, 127);
+        }
+        p > a:hover {
+            background-color: rgb(226, 226, 49);
+            color: rgb(97, 63, 63);
+        }        
+    </style>
+</head>
+<body>
+    <h1>[ CSS의 선택자 ]</h1>
+    <h2>h2 도 되지롱</h2>
+    <p>p태그 사용</p>
+    <p id="yellowtext">p태그 사용</p>
+    <p class="greentext">p태그 사용</p>
+    <!-- 동일한 속성이 겹치는 경우 우선 우선순위대로 / 같은 우선순위에서는 나중에 기재한 속성으로 적용 됨 ( 그래서 Cascade ) -->
+    <p class="greentext largetext slargetext">p태그 사용</p>
+    <p>p태그 사용</p>
+    <div class="div-container">
+        <p>DIV 안의 P</p>
+        <p class="div-container">DIV 안의 P</p>
+        <blockquote>
+            <p>DIV blockquote 안의 P</p>
+            <p>DIV blockquote 안의 P</p>
+        </blockquote>
+    </div>
+    <p><input type="text"></p>
+    <p><input type="password"></p>
+    <p><a href="https://google.com" target="_blank">구글로 이동</a></p>
+    <p><a href="https://naver.com" target="_blank">네이버로 이동</a></p>
+
+    <div>
+        <button><a href="../home.html">홈으로</a></button>
+    </div>    
+</body>
+</html>

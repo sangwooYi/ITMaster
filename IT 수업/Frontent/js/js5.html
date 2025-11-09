@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRkU0BR2no36LRsxt8BqXVk_soTAn3lkaFvNA&s">
+    <title>Document</title>
+
+    <style>
+        button {
+            display: block;
+            margin: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>[ 브라우저 객체 모델 ]</h1>
+    <button onclick="test1()">Window 창 열기</button>
+    <button onclick="test2()">Window 창 이동</button>
+    <button onclick="test3()">Window 창 닫기</button>
+    <button onclick="test4()">Screen 객체</button>
+    <button onclick="test5()">Location 객체</button>
+    <button onclick="test6()">History 객체</button>
+    <button onclick="test7()">Navigator</button>
+
+    <script>
+
+        let curPopup;
+
+        function test1() {
+            // 첫번쨰 인자는 주소 (URL), 두번쨰 인자는 target 속성 값, 세번째 인자는 띄우는 화면 스펙정보 , 통해 여러 속성들 넣어 줄 수 있음
+            // open 한 객체를 이렇게 담을 수 있다.
+            curPopup = window.open("../home.html", "win", "fullscreen=0,left=300, top=200, height=500, width=800");
+        }
+
+        function tmp() {
+            curPopup.moveBy(-50, 50);
+        }
+
+        function test2() {
+            if (curPopup != undefined || curPopup != null) {
+                // moveBy 는 상대경로 moveBy(a, b) 면 현재 창 기준 x 축 a 픽셀 / y 축 b 픽셀 이동
+                curPopup.moveBy(50, 50);
+
+                // 특정 메서드를 , n 밀리초 이후에 실행
+                setTimeout(tmp, 2000);
+                // moveTo 는 절대경로 moveTo(a, b) 면 그냥 현재 스크린 기준 x 축 a 픽셀, y 축 b 픽셀로 이동
+                
+            }    
+        }
+
+        function test3() {
+            if (curPopup != undefined || curPopup != null) {
+                curPopup.close();
+            }
+        }
+
+        function test4() {
+            // 사용자 모니터 정보
+            let width = screen.width;
+            let height = screen.height;
+            let availWidth  = screen.availWidth;    // 사용 가능 폭
+            let availHeight = screen.availHeight;   // 사용 가능 높이
+
+            console.log(`width = ${width}`);
+            console.log(`height = ${height}`);
+            console.log(`availWidth = ${availWidth}`);  
+            console.log(`availHeight = ${availHeight}`);
+        }
+       
+        function test5() {
+            console.log(`현재 URL = ${location.href}`);
+
+            const fnHref = function() {
+                location.href = "./js4.html";
+            }
+            // setTimeout 은 비동기 함수다 조심!
+            setTimeout(fnHref, 2000);
+            
+        }
+        function test6() {
+            //history.forward() // 바로 하나 앞 페이지로 이동 .go(1) 과 동일
+            //history.back();   // 바로 직전 페이지로 동 .go(-1)과 동일
+            //history.go(2);    // +n 이면 n 앞의 페이지로 / -n 이면 n 뒤의 페이지로 이동
+            history.go(-1);
+        }
+
+        function test7() {
+            alert(navigator.userAgent);
+        }
+    </script>
+</body>
+</html>

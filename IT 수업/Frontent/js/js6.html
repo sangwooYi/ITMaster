@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRkU0BR2no36LRsxt8BqXVk_soTAn3lkaFvNA&s">
+    <title>Document</title>
+
+    <style>
+        button, input{
+            display: block;
+            margin: 5px;
+            cursor: pointer;
+        }
+        #img-cont {
+            position: relative;
+            cursor: pointer;
+        }
+        #img-box {
+            width: 40px;
+            background-color: bisque;
+            font-size: 8px;
+            position: absolute;
+            text-align: center;
+        }
+        #calc-box {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+        }
+        #calc-box > select {
+            border: 1px solid black;
+        }
+        #calc-box > input {
+            width: 60px;
+            cursor: auto;
+        }
+        #operator {
+            height: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>[ 이벤트 폼 요소 ]</h1>
+
+    <input type="button" value="input 버튼 Type" id="btn1">
+    <button onclick="" id="btn2">버튼 Tag</button>
+
+    <div id="img-cont">
+        <div id="img-box">이미지 버튼</div>
+        <img id="btn3" src="https://png.pngtree.com/png-clipart/20190604/original/pngtree-yellow-button-png-image_854581.jpg" alt="" height="50px" width="50px">
+    </div>
+    <div id="mouse-events" style="font-size: 10px ;width: 60px; height: 60px; background-color: tomato; cursor: pointer;">
+        마우스 관련 이벤트들
+    </div>
+
+    <div>
+        <label for="input-events">키보드 관련 이벤트</label>
+        <input type="text" id="input-events">
+        <span id="cnt"></span>
+    </div>    
+
+
+    <div id="calc-box">
+        <input type="text" id="first-inp">
+        <select name="operator" id="operator">
+            <option value="+" selected>+</option>
+            <option value="-">-</option>
+            <option value="*">*</option>
+            <option value="/">/</option>
+        </select>
+        <input type="text" id="second-inp">
+        <button id="calculate">=</button>
+        <input type="text" id="result" readonly>
+    </div>
+
+    <button data-val="1" onclick="fnCheck(this)">111</button>
+    <button data-val="2" onclick="fnCheck(this)">222</button>
+    <button data-val="3" onclick="fnCheck(this)">333</button>
+
+    <div style="display: flex; flex-direction: row; margin: 5px;">
+        <!-- radio 태그 / select 태그의 경우 change 이벤트를 통해 이벤트를 체크 -->
+        <label for="radio1">radio1</label>
+        <input type="radio" name="radio" id="radio1" checked onchange="radioEvent()" value="1">
+        <label for="radio2">radio2</label>
+        <input type="radio" name="radio" id="radio2" onchange="radioEvent()" value="2">
+        <label for="radio3">radio3</label>
+        <input type="radio" name="radio" id="radio3" onchange="radioEvent()" value="3">
+    </div>
+
+    <script>
+
+        function fnCheck(btn) {
+            // 속성 값 가져오기
+            console.log(btn.getAttribute("data-val"));
+            
+            // 속성값 넣기
+            // 태그에 실제로 존재하는 속성이면 태그 자체에 영향을 주고,
+            // 존재하지 않는 속성값으로 세팅하는 경우 임시 데이터 역할을 한다.
+            const clickCnt = btn.getAttribute("click-cnt");
+
+            btn.setAttribute("click-cnt", clickCnt == undefined || clickCnt == null ? 1 : Number(clickCnt)+1);
+        }
+
+        document.getElementById("btn1").addEventListener("click", () => {
+            console.log("btn1");
+        })
+        document.getElementById("btn2").addEventListener("click", () => {
+            console.log("btn2");
+        })
+        document.getElementById("img-cont").addEventListener("click", () => {
+            console.log("btn3");
+        })  
+        
+        // 마우스 이벤트들 click 은 위에 있으니 제외
+        document.getElementById("mouse-events").addEventListener("mouseenter", () => {
+            console.log("마우스 진입때 이벤트 발생");
+        })
+        document.getElementById("mouse-events").addEventListener("mouseleave", () => {
+            console.log("마우스 영역에서 벗어날때 이벤트 발생");
+        })
+        // document.getElementById("mouse-events").addEventListener("mousemove", () => {
+        //     console.log("마우스가 움직이면 발동");
+        // })        
+
+        const inputTag = document.getElementById("input-events");
+
+        // Input 창 관련 이벤트
+        // focus 이벤트는 물론 Input 창 외에서도 사용 가능하다 그냥 영역에 포커싱이 되냐/안되냐에 따라 이벤트 발생
+        inputTag.addEventListener("focusin", () => {
+            console.log("해당 input 창에 포커싱 될 때");
+        })
+        inputTag.addEventListener("focusout", () => {
+            console.log("해당 input 창에 포커싱 아웃 때");
+        })        
+        inputTag.addEventListener("keydown", () => {
+            console.log("해당 input 창에 키보드 입력을 할 때, 키를 누를 때 발생");
+            chkTextlength();
+        });    
+        inputTag.addEventListener("keyup", () => {
+            console.log("해당 input 창에 키보드 입력을 할 때, 누른 키를 떼는 순간 발생");
+        })          
+        inputTag.addEventListener("change", () => {
+            console.log("focusout 되었을 때 값에 변화가 발생하면 호출되는 이벤트");
+            chkTextlength();
+        })
+    
+        function chkTextlength() {
+            const inputTag = document.getElementById("input-events");
+            let curTxt = inputTag.value;
+
+            if (curTxt.length > 10) {
+                curTxt = curTxt.substring(0, 10);
+                inputTag.value = curTxt;
+            }
+            document.getElementById("cnt").innerText = `${inputTag.value.length} 글자`;
+        }
+
+        document.getElementById("first-inp").addEventListener("keydown", function(e) {
+            // 정규식 체크 정규식.test();
+            if (/^\d$/.test(e.key) || e.keyCode == 190 || e.keyCode == 8) {
+                return true;
+            } else {
+                e.preventDefault();
+            }
+        });
+        document.getElementById("second-inp").addEventListener("keydown", (e) => {
+            // 이벤트가 발생한 태그 값은 e.target 에 담겨 있음
+            //console.log(e.target);
+            if (/^\d$/.test(e.key) || e.keyCode == 190 || e.keyCode == 8) {
+                return true;
+            } else {
+                e.preventDefault();
+            }
+        });        
+
+        document.getElementById("calculate").addEventListener("click", () => {
+            let firstNum = document.getElementById("first-inp").value;
+            let secondNum = document.getElementById("second-inp").value;
+            const operator = document.getElementById("operator").value;
+            
+            firstNum = Number(firstNum);
+            secondNum = Number(secondNum);
+
+            let resultNum = 0;
+            switch (operator) {
+                case "+": resultNum = firstNum+secondNum; 
+                        break;
+                case "-": resultNum = firstNum-secondNum;
+                        break;
+                case "*": resultNum = firstNum*secondNum;
+                        break;
+                case "/": if (secondNum == 0) {
+                            resultNum = "N/A"
+                          } else {
+                            resultNum = firstNum/secondNum;
+                          }
+                        break;
+            }
+            document.getElementById("result").value = resultNum;
+        })
+
+        function radioEvent() {
+
+            // querySelector 는 여러개일 경우 맨첫번째 태그만 반환,
+            // 아래처럼 css 선택자와 동일한 문법으로 선택자 지정이 가능하다
+            const tag = document.querySelector("input[name='radio']:checked");
+            console.log(tag);
+
+            // 물론 이렇게 가져와서 처리할수도 있음
+            const tag2 = document.getElementsByName("radio");
+            console.log(tag2);
+        }
+    </script>
+</body>
+</html>

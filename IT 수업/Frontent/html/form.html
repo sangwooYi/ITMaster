@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        a {
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+
+    <h3>[ 폼만들기 ]</h3>
+
+    <form action="../home.html" method="get">
+        <div>
+            <div>
+                <label for="in-t">ID : </label>
+                <input type="text" id="in-t">
+            </div>
+            <div>
+                <label for="in-p">PW : </label>
+                <input type="password" id="in-p" >
+            </div>
+            <div>
+                <label for="in-ee">Email : </label>
+                <input type="email" id="in-ee" >            
+            </div>
+        </div>
+        <div>
+            <label for="in-c">ㄱ</label>
+            <input type="checkbox" id="in-c"> 
+
+            <label for="in-c1">ㄴ</label>
+            <input type="checkbox" id="in-c1">             
+        </div>
+        <div>
+            <div>
+                <input type="radio" id="huey" name="drone" value="huey" checked />
+                <label for="huey">Huey</label>
+            </div>
+
+            <div>
+                <input type="radio" id="dewey" name="drone" value="dewey" />
+                <label for="dewey">Dewey</label>
+            </div>
+
+            <div>
+                <input type="radio" id="louie" name="drone" value="louie" />
+                <label for="louie">Louie</label>
+            </div>          
+        </div>
+        <div>
+            <label for="in-d">날짜</label>
+            <input type="date" id="in-d">
+        </div>
+        
+        <!-- form 안에 버튼은 자동으로 submit 기능을 갖는다. 이거 피하고싶으면 따로 처리해 줘야함
+            type="button" 명시 후에, 실제로 submit 할 버튼에다가는 자바스크립트로 submit 메서드 실행시켜주기 
+        -->
+        <button>제출</button>
+    </form>
+  
+    <form action="" method="get">
+        button : <input type="button"><br>
+        checkbox : <input type="checkbox">
+        color : <input type="color"><br>
+        date : <input type="date">
+        datetime-local : <input type="datetime-local"><br>
+        file : <input type="file"><br>
+        hidden : <input type="hidden"><br>
+        image : <input type="image">
+        month : <input type="month"><br>
+        number : <input type="number"><br>
+        radio : <input type="radio">
+        range : <input type="range"><br>
+        reset : <input type="reset"><br>
+        search : <input type="search"><br>
+        submit : <input type="submit"><br>
+        tel : <input type="tel">
+        time : <input type="time"><br>
+        url : <input type="url"><br>
+        week : <input type="week"><br>
+    </form>
+    <hr>
+    <!-- get 방식은 form 에 있는 형식을 자동으로 쿼리 파마리터로 세팅해준다. -->
+    <form action="../home.html" method="get">
+        <!-- 나중에 백엔드 서버와 통신할 때 name 값을 기준으로 소통함 -->
+        ID : <input type="text" name="id" placeholder="ID를 입력해 주세요"><br>
+        PW : <input type="text" name="pw"><br>
+        이메일 : <input type="text" name="mail" value="aaa@bbb.com"><br>
+        색상 : <input type="text" name="color"><br>
+        히든 : <input type="hidden" name="num" value="2"><br>
+
+        체크박스 : 여러개 선택 가능
+        <input type="checkbox" name="ch" id="a" checked>
+        <input type="checkbox" name="ch" id="b">
+        <input type="checkbox" name="ch" id="c">
+        <br>
+        라디오버튼 : 하나만 선택 가능 name 같은 애들끼리 알아서 묶임
+        <input type="radio" name="ra" id="1">
+        <input type="radio" name="ra" id="2">
+        <input type="radio" name="ra" id="3">
+        <input type="radio" name="ra2" id="11">
+        <input type="radio" name="ra2" id="22">
+        <input type="radio" name="ra2" id="33"><br>
+        
+        선택 : 
+        <select name="se" id="se" size="5" multiple>
+            <option value="abc">aaa</option>
+            <option value="bcdcc">bbb</option>
+            <option value="cccc">ccc</option>
+            <option value="dddd">ddddc</option>
+            <option value="eeee">eee</option>
+        </select><br>
+
+        여러줄 입력란 :
+        <textarea name="text-area" id="" rows="8" cols="30"></textarea><br>
+
+        <button type="submit">전송</button>
+    </form>
+
+    <hr>
+    <div>
+        <button><a href="../home.html">홈으로</a></button>
+    </div>
+</body>
+</html>

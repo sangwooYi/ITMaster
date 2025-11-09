@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    
+    <!-- 외부 css 가져올 때는 link 태그 이용 -->
+    <link rel="stylesheet" href="./test.css" rel="stylesheet">
+
+    <!-- 우선순위 태그 < 클래스 < id < 인라인 < important //
+    important 제외하고는, 같은 급에서는 더 자세할수록 우선순위 높고, 완전 같은 우선순위는 나중에 선언한게 덮어써짐
+    따라서 우선순위가 p.text2 > .text ( 같은 급에서는 더 자세하게 지정한게 우선순위가 높다 ) -->
+    <style>
+        .text2 {
+            color: green;
+        }
+    </style>
+</head>
+<body>
+    <h1>[ 텍스트 관련 속성 ]</h1>
+    <p class="text1">가나다라 abcdef</p>
+    <p class="text2">가나다라 abcdef</p>
+    <p class="text3">가나다라 abcdef</p>
+    <p class="text4">가나다라 abcdef</p>
+    <p class="text5">가나다라 abcdef</p>
+
+    <ul>
+        <li>목록1</li>
+        <li>목록2</li>
+        <li>목록3</li>
+    </ul>
+
+    <div>
+        <button><a href="../home.html">홈으로</a></button>
+    </div>        
+</body>
+</html>

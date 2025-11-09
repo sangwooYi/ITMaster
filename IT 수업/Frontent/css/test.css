@@ -1,0 +1,49 @@
+/* test.css css 파일 */
+
+/* 글꼴 가져와서 사용하기 */
+@font-face {
+    /* 여기서 font-family 작명은 내가 하기 나름이다. */
+    font-family: 'Cafe24Surround';  
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2105_2@1.0/Cafe24Ssurround.woff') format('woff');
+    font-weight: normal;
+    font-display: swap;
+}    
+@font-face {
+    font-family: 'HsJandari';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2510-2@1.0/HSJandari.woff2') format('woff2');
+    font-weight: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: 'zen-serif';
+    src: url('./ZEN-SERIF-TTF-Regular.ttf') format('truetype');
+}
+/* 같은 dept 에서 세부적으로 가려면 태그.클래스 식으로 접근해야함 + 붙여서 */
+p.text1 {
+    color: blue;
+    font-family: '돋움';
+}
+p.text2 {
+    font-family: 'Cafe24Surround';
+    font-size: 20px;
+    text-align: center;
+    line-height: 2;
+    font-weight: bolder;
+    /* letter spacing 은 글자간 간격 */
+    letter-spacing: 0.1em;
+    /* text-indent 는 들여쓰기 */
+    text-indent: 2em;
+}
+p.text3 {
+    font-family: 'HsJandari';
+    /* overline / line-through / underline */
+    text-decoration: underline;
+}
+p.text4 {
+    font-family: 'zen-serif';
+    font-size: 20px;
+}
+ul {
+    list-style: 'A ';   
+    
+}

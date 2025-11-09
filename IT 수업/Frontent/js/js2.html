@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    
+    <style>
+        .tmp-cont {
+            width: 20vw;
+            display: flex;
+            flex-direction: column;
+        }
+        .tmp-form {
+            margin: 10px;
+            display: flex;
+            flex-direction: row;
+        }
+        .tmp-form > input {
+            margin-left: 10px;
+        }
+    </style>
+
+    <script>
+        function test1() {
+            alert('알림'+1);
+            var a = confirm("안녕");
+            console.log(a);
+            prompt("입력해 이친구야");
+            // document.write('<div><p>안녕 디지몬</p></div>');
+        }
+        function test2() {
+            var a = 100;
+            var b = 200;
+            
+            var c;  // 일반적으로는 undefined 라는 값으로 초기화 되어있음
+
+            console.log("c==null => " + (c==null));     // true
+            console.log("c===null => " + (c===null));   // false
+            console.log("c==undefined => " + (c==undefined));   // true
+            console.log("c===undefined => " + (c===undefined)); // true
+
+            var tmp = 111;
+            console.log(tmp=="111");    // true
+            console.log(tmp==="111");   // false
+
+            c = a+b;
+            // 삼항연산자 { 조건 } ? true 일떄 :  false 일때
+            c = a > b ? 1 : 0;
+            console.log(c);
+        }
+        function test3() {
+            var a = 10;
+            var b = "12.3";
+            var c = "abcd";
+            var d = {name: 'what'};
+            var e = [1, 2, 3];
+            var f = true;
+            console.log("a type of = " + typeof(a));
+            console.log("b type of = " + typeof(b));
+            console.log("c type of = " + typeof(c));
+            console.log("d type of = " + typeof(d));
+            console.log("e type of = " + typeof(e));
+            console.log("f type of = " + typeof(f));
+            console.log(a+b);
+
+            // str -> number 변환
+            var convToNumB = Number(b);
+            var convToIntB = parseInt(b);   // 정수로 변환 따라서 소숫점 버려짐
+            var convToFloatB = parseFloat(b);
+            console.log(convToNumB);
+            console.log(convToIntB);
+            console.log(convToFloatB);
+
+            // number -> str 변환
+            var convToStrA = String(a);
+            console.log(convToStrA);
+            console.log(typeof(convToStrA));
+        }
+        
+        function isNull(val) {
+
+            if (val == undefined || val == null || val == "") {
+                return true;
+            }
+
+        }
+        function test4() {
+            var n1 = prompt("정수를 입력하세요 n1");
+            var n2 = prompt("정수를 입력하세요 n2");
+
+            var n3 = convToNum(n1) + convToNum(n2);
+            console.log(n3);
+        }
+        function test5(num1, num2) {
+
+            console.log(`${num1} + ${num2} = ${num1+num2} 입니다.`);
+
+        }
+        function test6() {
+
+            var num1Tag = document.getElementById("num1");
+            var num2Tag = document.getElementById("num2");
+            var num3Tag = document.getElementById("num3");
+        
+            var n1 = prompt("정수를 입력하세요 n1");
+            n1 = convToNum(n1);
+            num1Tag.value = n1;
+
+            var n2 = prompt("정수를 입력하세요 n2");
+            n2 = convToNum(n2);
+            num2Tag.value = n2;
+
+            num3Tag.value = n1+n2;
+        }   
+        function convToNum(value) {
+            if (typeof(value) == 'number') {
+                return value;
+            }
+            return Number(value);
+        }             
+    </script>
+</head>
+<body>
+    <h1>[ 함수, 변수, 연산자 ]</h1>
+    <button onclick="test1()">test1 호출</button>
+    <button onclick="test2()">test2 호출</button>
+    <button onclick="test3()">test3 자료형</button>
+    <button onclick="test4()">test4 자료형</button>
+    <button onclick="test5(10, 20)">test5 자료형</button>
+    <button onclick="test6()">test6 자료형</button>
+
+    <div class="tmp-cont">
+        <div class="tmp-form">
+            <label for="num1">Num1 : </label>
+            <input type="text" id="num1">
+        </div>
+        <div class="tmp-form">
+            <label for="num2">Num2 : </label>
+            <input type="text" id="num2">
+        </div>
+        <div class="tmp-form">
+            <label for="num3">Num3 : </label>
+            <input type="text" id="num3">            
+        </div>        
+    </div>
+</body>
+</html>s

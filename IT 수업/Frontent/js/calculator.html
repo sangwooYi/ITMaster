@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        .container {
+            width: 230px;
+            height: 250px;
+            border: 1px solid black;
+            border-radius: 5%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-evenly;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container input {
+            border: 2px solid black;
+            width: 180px;
+            height: 22px;
+            text-align: right;
+        }
+        
+        .outer-lay {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+        }
+
+        .inner-button {
+            width: 150px;
+            display: flex;
+            flex-direction: row;  
+            justify-content: center;      
+        }
+
+        .container button {
+            cursor: pointer;
+            margin: 3px;
+            width: 40px;
+            height: 30px;
+        }
+
+        .flex-col {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+
+            /* 강제 이동 각각 x축 , y 축*/
+            transform: translate(-2px, 0);
+        }
+
+        #mid-display {
+            /* 강제 이동 */
+            transform: translate(0, 8px);
+        }
+    </style> 
+</head>
+<body>
+    <div class="container">
+        <input type="text" id="mid-display" readonly>
+        <input type="text" id="calc-display" readonly>
+        <div class="outer-lay">
+            <div>
+                <div class="inner-button">
+                    <button class="num-button">1</button><button class="num-button">2</button><button class="num-button">3</button>                
+                </div>
+                <div class="inner-button">
+                    <button class="num-button">4</button><button class="num-button">5</button><button class="num-button">6</button>                
+                </div>
+                <div class="inner-button">
+                    <button class="num-button">7</button><button class="num-button">8</button><button class="num-button">9</button>
+                </div>
+                <div class="inner-button">
+                    <button class="num-button">0</button><button id="delete">Del</button><button id="reset">C</button>
+                </div>
+            </div>
+            <div class="flex-col">
+                <button id="plus">+</button>
+                <button id="minus">-</button>
+                <button id="multiple">*</button>
+                <button id="equal">=</button>
+            </div>      
+        </div>  
+    </div>
+
+    <script>
+        // Id 로 가져올떄는 getElementById
+        // 계산기 input 태그
+        const midDisplay = document.getElementById("mid-display");
+        const calcDisplayTag = document.getElementById("calc-display");
+
+        // 상수
+        const INIT_NUM = "0";
+        
+        // 초기 값
+        calcDisplayTag.value = INIT_NUM;
+
+        // class 명으로 가져올떄는 getElementsByClassName 
+        // (여러개 존재하면 아래처럼 HTMLCollection 이란 오브젝트에 담아서 반환 됨)
+        const tagList = document.getElementsByClassName("num-button")
+        //console.log(tagList);
+
+        // 총 10개의 숫자버튼이 있으므로 for 문으로 각각 이벤트리스너 장착
+        for (let i = 0; i < tagList.length; i++) {
+            let curTag  = tagList[i];
+
+            // 클릭 이벤트 리스너 장착
+            curTag.addEventListener('click', function() {
+
+                let nextVal = "";
+                
+                // 직전상태가 0인 경우 분기처리
+                if (calcDisplayTag.value == INIT_NUM) {
+                    nextVal = curTag.innerHTML;
+                // 직전상태가 0이 아니면 현재 상태에서 뒤에 한자리를 덧붙임
+                } else {
+                    nextVal = calcDisplayTag.value + curTag.innerHTML;
+                }
+                // 최종상태 input 태그에 대입
+                calcDisplayTag.value = nextVal;
+            })
+        }
+        
+        // 한자리 Delete
+        // 참고로 addEventListener click 말고도 어떤거있는지 개인적으로 검색해보면 좋습니다.
+        // addEventListner 구현법 1: function 선언 형태로 구현
+        document.getElementById("delete").addEventListener('click', function() {
+            
+            let curVal = calcDisplayTag.value;
+    
+            let nextVal = curVal.substring(0, curVal.length-1);
+            if (isNull(nextVal)) {
+                calcDisplayTag.value = INIT_NUM;
+            } else {
+                calcDisplayTag.value = nextVal;
+            }
+        });
+
+        // 최종결과가 나온 상태인지 체크 ( = 을 클릭한 상태라면 
+        // 숫자 패드 누를경우 본 디스플레이 초기화 필요, Del 버튼 )
+
+        // 초기화
+        // addEventListner 구현법2 : 함수표현식으로 구현
+        document.getElementById("reset").addEventListener('click', () => {
+            calcDisplayTag.value = INIT_NUM;
+            midDisplay.value = "";
+        });
+
+        // 사칙연산
+        document.getElementById("plus").addEventListener('click', () => {
+            moveMidDisplay(calcDisplayTag.value, "+");
+            calcDisplayTag.value = INIT_NUM;
+        });
+        document.getElementById("minus").addEventListener('click', () => {
+            moveMidDisplay(calcDisplayTag.value, "-");
+            calcDisplayTag.value = INIT_NUM;
+        });
+        document.getElementById("multiple").addEventListener('click', () => {
+            moveMidDisplay(calcDisplayTag.value, "*");
+            calcDisplayTag.value = INIT_NUM;
+        });    
+
+        // 결과
+        document.getElementById("equal").addEventListener('click', () => {
+
+            if (isNull(midDisplay.value)) {
+                return;
+            }
+
+            // ex) 555 +  <- 이런식으로 되어있을것이므로 빈칸으로 split 한 후 두번쨰 값만 취함 split 후에는 ['555, '+'] 이렇게 됨
+            const operator = midDisplay.value.split(" ")[1]
+            const curVal = calcDisplayTag.value;
+
+            let result = calcuelateNumber(curVal, operator);
+            midDisplay.value = "";
+            calcDisplayTag.value = result;
+            
+        });        
+
+        // null 체크
+        function isNull(value) {
+            if (value == null || value == undefined || value == "") {
+                return true;
+            } 
+            return false;
+        }
+
+        // 중간 디스플레이로 이동 (연산자 누르는 경우)
+        function moveMidDisplay(value, operator) {
+            
+            let nextVal = value;
+
+            if (!isNull(midDisplay.value)) {
+
+                nextVal = calcuelateNumber(value, operator);
+
+            } 
+            midDisplay.value = "";
+            midDisplay.value += `${nextVal} ${operator}` ; 
+        }
+
+        // 계산
+        function calcuelateNumber(value, operator) {
+            // ex) 555 +  <- 이런식으로 되어있을것이므로 빈칸으로 split 한 후 첫번쨰 값만 취함
+            let oldVal = midDisplay.value.split(" ")[0];
+            
+            let result;
+
+            if (operator == "+") {
+                result = Number(oldVal) + Number(value);
+            } else if (operator == "-") {
+                result = Number(oldVal) - Number(value);
+            } else if (operator == "*") {
+                result = Number(oldVal) * Number(value);
+            }
+            nextVal = result.toString();       
+            
+            return nextVal;
+        }
+    </script>       
+</body>
+</html>
