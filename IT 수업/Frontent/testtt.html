@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>순수 JS SPA 예제</title>
+    <!-- Tailwind CSS 로드 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* 기본 폰트 설정 */
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* 활성 링크 스타일 */
+        .nav-link.active {
+            font-weight: bold;
+            color: #3b82f6; /* blue-500 */
+            border-bottom: 2px solid #3b82f6;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <div id="app" class="container mx-auto p-4 max-w-3xl">
+        <!-- 헤더 및 네비게이션 -->
+        <header class="bg-white p-6 rounded-lg shadow-md mb-6">
+            <h1 class="text-3xl font-bold text-center text-blue-600 mb-4">내 SPA 사이트</h1>
+            <nav class="flex justify-center space-x-6">
+                <!-- 해시 링크를 사용하여 페이지 이동 -->
+                <a href="#home" class="nav-link text-lg text-gray-600 hover:text-blue-500 transition duration-300 pb-1">홈</a>
+                <a href="#about" class="nav-link text-lg text-gray-600 hover:text-blue-500 transition duration-300 pb-1">소개</a>
+                <a href="#contact" class="nav-link text-lg text-gray-600 hover:text-blue-500 transition duration-300 pb-1">연락처</a>
+                <a href="#404-test" class="nav-link text-lg text-gray-600 hover:text-blue-500 transition duration-300 pb-1">404 테스트</a>
+            </nav>
+        </header>
+
+        <!-- 컨텐츠가 렌더링될 메인 영역 -->
+        <main id="content" class="bg-white p-8 rounded-lg shadow-md min-h-[300px]">
+            <!-- 이 곳의 내용이 동적으로 변경됩니다. -->
+        </main>
+
+        <footer class="text-center text-gray-500 mt-6">
+            &copy; 2025 순수 JS SPA 예제
+        </footer>
+    </div>
+
+    <script type"module">
+        // --- 1. 페이지 컨텐츠 정의 ---
+        // 각 페이지에 해당하는 HTML 컨텐츠를 반환하는 함수들입니다.
+        
+        const HomePage = () => {
+            return `
+                <h2 class="text-2xl font-semibold mb-4 text-gray-700">홈 페이지</h2>
+                <p class="mb-3">안녕하세요! 순수 자바스크립트로 만든 SPA 페이지에 오신 것을 환영합니다.</p>
+                <p>위의 네비게이션 링크를 클릭하여 페이지를 이동해보세요. 페이지가 새로고침되지 않고 내용이 바뀌는 것을 확인하실 수 있습니다.</p>
+            `;
+        };
+
+        const AboutPage = () => {
+            return `
+                <h2 class="text-2xl font-semibold mb-4 text-gray-700">소개</h2>
+                <p class="mb-3">이 SPA는 ES6 자바스크립트와 해시(#) 라우팅을 사용하여 구현되었습니다.</p>
+                <ul class="list-disc list-inside">
+                    <li>외부 라이브러리 (React, Vue 등) 없음</li>
+                    <li><code>window.location.hash</code> 를 감지하여 라우팅</li>
+                    <li><code>innerHTML</code> 을 사용하여 동적 컨텐츠 렌더링</li>
+                </ul>
+            `;
+        };
+
+        const ContactPage = () => {
+            return `
+                <h2 class="text-2xl font-semibold mb-4 text-gray-700">연락처</h2>
+                <form id="contact-form" class="space-y-4">
+                    <div>
+                        <label for="name" class="block text-sm font-medium text-gray-600">이름</label>
+                        <input type="text" id="name" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                    </div>
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-gray-600">이메일</label>
+                        <input type="email" id="email" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                    </div>
+                    <div>
+                        <label for="message" class="block text-sm font-medium text-gray-600">메시지</label>
+                        <textarea id="message" rows="4" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"></textarea>
+                    </div>
+                    <button type="submit" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md transition duration-300">
+                        전송
+                    </button>
+                </form>
+            `;
+        };
+        
+        const NotFoundPage = () => {
+            return `
+                <h2 class="text-2xl font-semibold mb-4 text-red-600">404 - 페이지를 찾을 수 없습니다</h2>
+                <p class="mb-3">요청하신 페이지가 존재하지 않습니다.</p>
+                <a href="#home" class="text-blue-500 hover:underline">홈으로 돌아가기</a>
+            `;
+        };
+
+        // --- 2. 라우트 정의 ---
+        // 해시 경로와 해당 경로가 보여줄 컨텐츠 함수를 매핑합니다.
+        const routes = {
+            '#home': HomePage,
+            '#about': AboutPage,
+            '#contact': ContactPage,
+        };
+
+        // --- 3. 라우터 함수 ---
+        // 현재 해시를 기반으로 적절한 컨텐츠를 렌더링합니다.
+        const router = () => {
+            // 현재 URL의 해시 값을 가져옵니다. (예: #about)
+            // 해시가 없으면 기본값으로 '#home'을 사용합니다.
+            const path = window.location.hash || '#home';
+            console.log(`라우팅 경로: ${path}`);
+
+            // 메인 컨텐츠 영역을 찾습니다.
+            const contentElement = document.getElementById('content');
+            
+            // 활성 네비게이션 링크 스타일을 업데이트합니다.
+            updateActiveNav(path);
+
+            // routes 객체에서 현재 경로에 맞는 페이지 컴포넌트(함수)를 찾습니다.
+            // 만약 정의된 경로가 없다면 NotFoundPage 함수를 사용합니다.
+            const pageComponent = routes[path] || NotFoundPage;
+            
+            // 해당 컴포넌트 함수를 실행하여 HTML 문자열을 가져온 뒤,
+            // main 영역의 innerHTML을 교체합니다.
+            contentElement.innerHTML = pageComponent();
+            
+            // Contact 페이지인 경우 폼 이벤트 리스너 추가
+            if (path === '#contact') {
+                addContactFormListener();
+            }
+        };
+
+        // --- 4. 활성 링크 스타일 업데이트 함수 ---
+        const updateActiveNav = (currentPath) => {
+            const navLinks = document.querySelectorAll('.nav-link');
+            
+            navLinks.forEach(link => {
+                // link.getAttribute('href')는 '#home', '#about' 등입니다.
+                if (link.getAttribute('href') === currentPath) {
+                    link.classList.add('active');
+                } else {
+                    link.classList.remove('active');
+                }
+            });
+        };
+        
+        // --- 5. Contact 페이지 폼 이벤트 리스너 ---
+        const addContactFormListener = () => {
+            const form = document.getElementById('contact-form');
+            if (form) {
+                form.addEventListener('submit', (e) => {
+                    e.preventDefault(); // 폼 전송(새로고침) 방지
+                    
+                    // 실제로는 alert 대신 모달을 띄우는 것이 좋습니다.
+                    const name = document.getElementById('name').value;
+                    alert(`(데모) ${name}님, 메시지가 성공적으로 전송되었습니다! (실제 전송 X)`);
+                    
+                    form.reset(); // 폼 초기화
+                });
+            }
+        };
+
+        // --- 6. 이벤트 리스너 등록 ---
+
+        // 'hashchange' 이벤트는 URL의 해시가 변경될 때마다 발생합니다.
+        // (예: 사용자가 링크를 클릭하거나 브라우저 뒤로가기/앞으로가기 버튼을 누를 때)
+        window.addEventListener('hashchange', router);
+
+        // 'load' 이벤트는 페이지가 처음 로드될 때 발생합니다.
+        // 페이지가 처음 로드될 때도 현재 해시에 맞는 컨텐츠를 보여줘야 합니다.
+        window.addEventListener('load', router);
+
+    </script>
+</body>
+</html>

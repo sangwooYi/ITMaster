@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+   <p>넘어온 값은 <span th:text="${num}"></span></p>
+
+    <h5>이건 그냥 타임리프 모델 체크</h5>
+    <ul>
+        <li>아이디 : <span th:text="${person.userID}"></span></li>
+        <li>이름 : <span th:text="${person.userName}"></span></li>
+    </ul>
+   <p>이렇게도 가능 th:object 이용 </p>
+    <ul th:object="${person}">
+        <!-- 하위 태그들은 필드를 $가 아닌 * 접근자로 접근     -->
+        <li>아이디: <span th:text="*{userID}"></span></li>
+        <li>이름: <span th:text="*{userName}"></span></li>
+    </ul>
+</body>
+</html>

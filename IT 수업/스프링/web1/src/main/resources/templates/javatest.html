@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Java Quiz</title>
+    <style>
+        #timer {
+            color: red;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        #quiz-box{
+            display: flex;
+            flex-direction: column;
+            align-items: start;
+            border: 2px solid black;
+            padding: 10px 5px;
+            width: 500px;
+            height: 280px;
+        }
+        #quiz-box input {
+            margin-right: 15px;
+        }
+        #answer-box {
+            border: 2px dotted black;
+            padding: 10px 5px;
+            width: 500px;
+            height: 200px;
+        }
+    </style>
+</head>
+<body>
+<div>
+    <div id="timer"></div>
+    <h3>[ Java 퀴즈 ]</h3>
+    <div id="quiz-box">
+        <p>1. Java에서 클래스를 정의할 때 사용하는 키워드는?</p>
+        <div>
+            <input type="radio" class="answer1" name="answer1" id="answer1-1" value="1">
+            <label for="answer1-1">① function</label>
+        </div>
+        <div>
+            <input type="radio" class="answer1" name="answer1" id="answer1-2" value="2">
+            <label for="answer1-2">② class</label>
+        </div>
+        <div>
+            <input type="radio" class="answer1"name="answer1" id="answer1-3" value="3">
+            <label for="answer1-3">③ define</label>
+        </div>
+        <div>
+            <input type="radio" class="answer1" name="answer1" id="answer1-4" value="4">
+            <label for="answer1-4">④ object</label>
+        </div>
+        <p>2. 4바이트 크기의 정수형 변수를 선언할 때 사용하는 키워드는?</p>
+        <input type="text" id="answer2" style="width: 400px; margin-left: 20px;">
+        <button id="submit" style="margin: 10px;">완료</button>
+    </div>
+</div>
+<h3>[ 결과 ]</h3>
+<div id="answer-box">
+
+</div>
+
+<script>
+    const timerTag = document.getElementById("timer");
+    const RIGHT = 'O';
+    const WRONG = 'X';
+
+    let time = 0;
+
+    setInterval(setTimer, 1000);
+
+    function setTimer() {
+        time += 1;
+
+        let timerTxt = "";
+
+        const hour = Math.floor(time/3600);
+        let tmp = time%3600;
+        const minute = Math.floor(tmp/60);
+        const second = tmp%60;
+
+        if (hour > 0) {
+            timerTxt = `경과 시간: ${hour}시 ${minute}분 ${second}초`;
+        } else {
+            timerTxt = `경과 시간: ${minute}분 ${second}초`;
+        }
+        timerTag.innerText = timerTxt;
+    }
+    // 제출
+    document.getElementById("submit").addEventListener('click', () => {
+
+        let totalScore = 0;
+
+        if (!isAllAnswered()) {
+            alert("모든 문제를 입력해 주세요");
+            return;
+        }
+        // 두 문제 다 풀었음
+        // 문제가 맞을때만 변경
+        let result = [WRONG, WRONG];
+
+        // 1번 문제
+        const answer1 = document.querySelector('.answer1:checked').value;
+        const answer2 = document.getElementById("answer2").value;
+        if (answer1 == '2') {
+            result[0] = RIGHT;
+            totalScore += 50;
+        }
+
+        // 2번 문제
+        // 대소문자 무시, 양끝 공백 무시
+        if (answer2.toUpperCase().trim() == 'INT') {
+            result[1] = RIGHT;
+            totalScore += 50;
+        }
+        const answerBoxTag = document.getElementById('answer-box');
+        answerBoxTag.innerHTML = '';
+        let resultHtml = "";
+
+        if (result[0] == RIGHT) {
+            resultHtml += `<p>1번: ${RIGHT}</p>`
+        } else {
+            resultHtml += `<p>1번: ${WRONG} (정답은 2)</p>`
+        }
+
+        if (result[1] == RIGHT) {
+            resultHtml += `<p>2번: ${RIGHT}</p>`
+        } else {
+            resultHtml += `<p>2번: ${WRONG} (정답은 int)</p>`
+        }
+
+        resultHtml += `<h5>총점: ${totalScore}</h5>`
+        if (totalScore >= 50) {
+            resultHtml += '<h4 style="color:green;">합격입니다.</h4>';
+        } else {
+            resultHtml += '<h4 style="color:red;">불합격입니다.</h4>';
+        }
+        answerBoxTag.innerHTML = resultHtml;
+    });
+
+    function isAllAnswered() {
+        const answer1Tag = document.querySelector('.answer1:checked');
+        const answer2Val = document.getElementById('answer2').value;
+
+        if(isNull(answer1Tag) || isNull(answer2Val.trim())) {
+            return false;
+        }
+        return true
+    }
+
+    function isNull(value) {
+        if (value == undefined || value == null || value == "") {
+            return true;
+        }
+    }
+</script>
+</body>
+</html>

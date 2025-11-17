@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h1>[ 서버로 Parameter 보내기 ]</h1>
+
+    <h4>Request Param 사용</h4>
+    <form action="/input/input1" method="post">
+        <label for="user-id">ID : </label>
+        <input name="userId" id="user-id"/>
+        <label for="password">PW : </label>
+        <input name="password" id="password"/>
+        <label for="user-name">Name : </label>
+        <input name="userName" id="user-name"/>
+        <label for="address">address : </label>
+        <input name="address" id="address"/>
+
+        <!-- form 안에 버튼이 한개있으면 자동으로 type="submit"  -->
+        <button>제출</button>
+    </form>
+
+
+    <h4>ModelAttribute 사용</h4>
+    <form action="/input/input2" method="post">
+        <label for="user-id2">ID : </label>
+        <input name="userId" id="user-id2"/>
+        <label for="password2">PW : </label>
+        <input name="password" id="password2"/>
+        <label for="user-name2">Name : </label>
+        <input name="userName" id="user-name2"/>
+        <label for="address2">address : </label>
+        <input name="address" id="address2"/>
+
+        <!-- form 안에 버튼이 한개있으면 자동으로 type="submit"  -->
+        <button>제출</button>
+    </form>
+</body>
+</html>

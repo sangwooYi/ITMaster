@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!-- @ 경로로 호출 할 때 정적 경로는 static 이 기본 /main.css 면 실제로는 /static/main.css 위치 파일을 찾아 줌    -->
+    <link th:href="@{/main.css}" rel="stylesheet"/>
+</head>
+<body>
+    <h1>[ 다른경로로 호출 ]</h1>
+
+    <!-- url 상대경로로 호출하는 태그가 -->
+    <img th:src="@{/image/favicon.png}" />
+    <p>테스트용</p>
+    <a href="/">홈으로 이동</a>
+
+    <script th:src="@{/js/test.js}"></script>
+</body>
+</html>

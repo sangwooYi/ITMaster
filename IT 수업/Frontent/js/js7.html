@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRkU0BR2no36LRsxt8BqXVk_soTAn3lkaFvNA&s">
+    <title>Document</title>
+</head>
+<body>
+    <h1>특수값, 객체, 타이머</h1>
+
+    <div id="clock">    
+    </div>
+    <button onclick="test1()">하하</button>
+    <button onclick="test2()">히히</button>
+    <button onclick="test3()">setTimeOut</button>
+    <button onclick="test4()">Interval</button>
+    <button onclick="test5()">Clock</button>
+    <button onclick="stopTimer()">타이머 중지</button>
+    <button onclick="test7()">타이머 띄우기</button>
+
+    <table id="table">
+        <tr>
+            <th>Id</th>
+            <th>password</th>
+            <th>Name</th>
+        </tr>
+    </table>
+
+    <select name="names" id="names">
+        <option value="김철수" selected>김철수</option>
+        <option value="아이묭">아이묭</option>
+        <option value="이상우">이상우</option>
+        <option value="염지선">염지선</option>
+    </select>
+    <script>
+        //console.log(document.getElementById("names").value);
+
+        function test1() {
+            console.log(3/0);   // Infinity
+            let tag = document.getElementById("asdasd");
+            console.log(tag); // null 아예 초기화 안하면 undefined , 초기화하려는데 아예 없는값이면 null
+        }
+
+        function test2() {
+            let obj =  { name: "홍길동", age: 30};
+            console.log(obj['name']);
+            console.log(obj.name);
+            
+            let member = [
+                {id: 'user1', password: '1111', name: '김철수'},
+                {id: 'user2', password: '2222', name: '한미미'},
+                {id: 'user3', password: '3333', name: '아이묭'}
+            ]
+            console.log(member[1]['name']);
+
+            // <table> 태그 선택
+            const tableTag = document.getElementById('table');
+
+            // 초기화
+            tableTag.innerHTML = `<tr>  
+                                    <th>Id</th>
+                                    <th>password</th>
+                                    <th>Name</th>
+                                  <tr>`;
+            for (let m of member) {
+
+                // tr 태그 생성  ( .creatElement('태그명') 지정한 태그를 생성하는 것)
+                const trTag = document.createElement('tr');
+
+                // td 태그 생성
+                const idTdTag = document.createElement('td');
+                const pwTdTag = document.createElement('td');
+                const nameTdTag = document.createElement('td');
+
+                // 각 td 태그에 값 할당
+                idTdTag.innerText = m.id;
+                pwTdTag.innerText = m.password;
+                nameTdTag.innerText = m.name;
+
+                // td 태그를 tr 태그에 넣어주는것 .appendChild() // 특정 태그에 가장 마지막부분에 다른 태그를 넣어주는 함수
+                trTag.appendChild(idTdTag);
+                trTag.appendChild(pwTdTag);
+                trTag.appendChild(nameTdTag);
+
+                /*
+                    위 작업 끝나고 나면 아래와같은 태그가 만들어져 있음
+                    <tr>
+                        <td>id값</td>
+                        <td>pw값</td>
+                        <td>name값</td>
+                    </tr>
+                */
+                // 위에서 만든 태그를 table 태그에 appendChild
+                tableTag.appendChild(trTag);
+            }
+        }
+
+        function test3() {
+            setTimeout(() => {
+                console.log("3초후에 실행");
+            }, 3*1000); // 밀리초 단위
+        }
+
+    
+        // interval 주는 법 및 종료 법
+        // 종료할때는 clearInterval
+        function test4() {
+            let cnt = 0;    // 이거 함수 밖에쓰면 작동안한다 주의
+            const interval = setInterval(() => {
+                cnt += 1;
+                console.log(cnt);
+                if (cnt === 3) {
+                    console.log("종료합ㄴ디ㅏ");
+                    clearInterval(interval);
+                }
+
+            }, 1000); // 밀리초단위, 해당 시간단위로 계속 반복
+        }
+
+        let clockInterval;
+        function test5() {
+            clockInterval = setInterval(checkCurTime,1000);
+        }
+
+        function checkCurTime() {
+            const now = new Date();
+            //console.log(`now = ${now}`);
+
+            const hour = now.getHours();
+            const miniute = now.getMinutes();
+            const second = now.getSeconds();
+            // console.log(`hour : ${hour}`);
+            // console.log(`miniute : ${miniute}`);
+            // console.log(`second : ${second}`);
+            
+            document.getElementById("clock").innerText= `현재시각: ${hour}시 ${miniute}분 ${second}초`;
+        }
+
+        function stopTimer() {
+            if (clockInterval != null && clockInterval != undefined) {
+                clearInterval(clockInterval);
+            }
+        }
+        let curPop;
+        function test7() {
+            curPopup = window.open("./timer.html", "win", "fullscreen=0,left=300, top=200, height=200, width=200");
+        }
+    </script>
+</body>
+</html>
