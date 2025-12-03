@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <style>
+        table {
+            border-collapse: collapse;
+        }
+        td, th {
+            border: 1px solid black;
+        }
+    </style>
+</head>
+<body>
+    <h3>Person 전체 정보 조회</h3>
+    <h4>전체 조회 결과 : <span th:text="${#arrays.length(personList)}"></span>건</h4>
+    <p th:text="${personList}"></p>
+    <hr>
+    <table>
+        <tr>
+            <th>No.</th>
+            <th>아이디</th>
+            <th>삭제</th>
+            <th>수정</th>
+        </tr>
+        <tr th:if="${personList eq null}">
+            <td colspan="2">조회 결과 없습니다. 잔넨</td>
+        </tr>
+        <tr th:if="${personList ne null}" th:each="person, status : ${personList}">
+            <td th:text="${status.count}"></td>
+            <td>
+                <!-- ()안에 쓴 변수들은 pathVariable 에 있으면 알아서 매핑, 나머지는 쿼리스트링으로 자동 결합해 줌   -->
+                <a th:href="@{/person/{userId}(userId=${person.userId})}">
+                    <span th:text="${person.userId}"></span>
+                </a>
+            </td>
+            <!-- this 인자 넘기는 연습 ㄱㄱ           -->
+            <td><button class="delete" th:tmp-data="${person.userId}" onclick="deleteButton(this)">삭제</button></td>
+            <td><button th:tmp-data="${person.userId}" onclick="upateButton(this)">수정</button></td>
+        </tr>
+    </table>
+
+
+    <button><a th:href="@{/home}">홈으로</a></button>
+
+    <script>
+        //
+        function deleteButton(tag) {
+            const userId = tag.getAttribute('tmp-data');
+            if (confirm("삭제하실??")) {
+                window.location.href = '/delete/' + userId;
+            }
+        }
+
+        function upateButton(tag) {
+            const userId = tag.getAttribute('tmp-data');
+            window.location.href = '/update/' + userId;
+
+        }
+
+        // const btnTags = document.querySelectorAll('.delete');
+        //
+        // btnTags.forEach((btnTag) => {
+        //     btnTag.addEventListener('click', (e) => {
+        //
+        //         if (confirm("삭제하실??")) {
+        //             // 위에 태그에 임시 속성 할당하여 이렇게 뽑아 쓰는 방법이 쉽다!
+        //             const userId = e.target.getAttribute('tmp-data');
+        //
+        //             // 참고로 위에처럼 임시 속성값 없으면 아래처럼 찾아가야한다.
+        //             // const eTrTag = e.target.parentNode.parentNode;
+        //             // const userId = eTrTag.children[1].querySelector('span').innerText;
+        //             window.location.href = '/delete/' + userId;
+        //         }
+        //     })
+        // })
+    </script>
+</body>
+</html>

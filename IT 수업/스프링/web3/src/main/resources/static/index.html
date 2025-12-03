@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+    <h2>[ 메인 화면 ]</h2>
+<!--    <p><a href="test/test1">테스트 해보자</a></p>-->
+    <p><a href="/input">Input 테스트</a></p>
+    <p><a href="/delete/12321312">삭제</a></p>
+    <p>Person 조회</p>
+    <form action="/select" method="get">
+        <label for="userId">유저 ID : </label>
+        <input id="userId" name="userId">
+        <button type="submit">Person 조회</button>
+    </form>
+    <p><a href="/person/all">전체 조회</a></p>
+    <p><a href="/student/select">조회</a></p>
+
+    <p><a href="/student/save">예제1. 학점 임력기</a></p>
+</body>
+</html>

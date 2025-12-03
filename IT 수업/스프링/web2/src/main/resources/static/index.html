@@ -22,8 +22,48 @@
         <li><a href="/input/input4/10">Path Variable 사용</a></li>
     </ul>
     <li>세션</li>
+    <ul>
+        <li><a href="/ss/session1">세션에 저장</a></li>
+        <li><a href="/ss/session2">세션에 읽기</a></li>
+        <li><a href="/ss/session3">세션에 삭제</a></li>
+        <li>로그인</li>
+        <form action="/ss/login" method="post">
+            <label for="userId">ID : </label>
+            <input type="text" id="userId" name="userId">
+            <label for="password">PW : </label>
+            <input type="text" id="password" name="password">
+            <button>제출</button>
+        </form>
+
+        <li><a href="/ss/logout">로그아웃</a></li>
+        <li><a href="/ss/test">로그인 해야 접속 가능 페이지</a></li>
+        <form action="/ss/test" method="post">
+            <label for="userId2">ID : </label>
+            <input type="text" id="userId2" name="userId2">
+            <label for="password2">PW : </label>
+            <input type="text" id="password2" name="password2">
+            <button>제출</button>
+        </form>
+    </ul>
     <li>쿠키</li>
+    <ul>
+        <li><a href="/cookie/cookie-test1">쿠키 저장</a></li>
+        <li><a href="/cookie/cookie-test2">쿠키 삭제</a></li>
+        <li><a href="/cookie/cookie-test3">쿠키 읽기</a></li>
+        <li><a href="/cookie/cookie-test4">@CookieValue 사용하여 읽기</a></li>
+    </ul>
     <li>localStorage, sessionStorage</li>
+    <a href="/cookie/session">페이지 이동</a>
+
     <li>Thymeleaf</li>
+    <ul>
+        <li><a href="/th/thymeleaf1">타임리프 연습 1</a></li>
+        <li><a href="/th/thymeleaf2">타임리프 연습 2</a></li>
+    </ul>
+
+    <li>예제</li>
+    <ul>
+        <li><a href="/th/example">당일 방문 횟수 출력 하기</a></li>
+    </ul>
 </body>
 </html>

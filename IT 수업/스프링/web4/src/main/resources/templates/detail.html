@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!-- 부트스트랩 css  -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+
+    <style>
+        #board-container {
+            width: 800px;
+            height: 450px;
+            border: 1px solid black;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h2 class="text-center my-5">세부 글<span></span></h2>
+
+    <div class="container p-4 d-flex flex-column justify-content-evenly" id="board-container" th:object="${guestbook}">
+        <input type="hidden" th:value="*{password}" th:field="*{password}" id="password">
+        <div class="mb-3 row">
+            <!-- th:field 쓸때 라벨도 th:for 로 해주어야 함
+            혹은 id 값은 별도로 하드코딩 -->
+            <label th:for="boardNum" class="col-sm-2 col-form-label">No.</label>
+            <div class="col-sm-3">
+                <input type="text" class="form-control-plaintext" th:field="*{boardNum}" th:value="*{boardNum}" readonly>
+            </div>
+            <label th:for="inputDate" class="col-sm-2 col-form-label">작성 시간</label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control-plaintext" th:field="*{inputDate}" th:value="*{inputDate}" readonly>
+            </div>
+        </div>
+
+        <div class="mb-3 row">
+            <label th:for="userName" class="col-sm-2 col-form-label">이름</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" th:field="*{userName}" th:value="*{userName}" readonly>
+            </div>
+        </div>
+        <div class="mb-3 row">
+            <label for="message" class="col-sm-2 col-form-label">내용</label>
+            <div class="col-sm-10">
+                <textarea class="form-control" id="message" name="message" style="resize: none; height: 200px;"
+                          th:text="*{message}" readonly></textarea>
+            </div>
+        </div>
+        <div class="row">
+            <button type="button" class="btn btn-primary col-2 mx-1"><a class="link-light link-underline-opacity-0" th:href="@{/update/{boardNum}(boardNum=${boardNum})}">수정</a></button>
+            <button type="button" class="btn btn-danger col-2 mx-1" id="deleteBtn">삭제</button>
+            <button type="button" class="btn btn-secondary col-2 mx-1"><a class="link-light link-underline-opacity-0" th:href="@{/all}">돌아가기</a></button>
+        </div>
+    </div>
+
+    <!-- 부트스트랩 js  -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+    <script>
+        document.getElementById('deleteBtn').addEventListener('click', () => {
+
+            const passwordInput = prompt("삭제하시려면 비밀번호를 입력해 주세요")
+            const password = document.getElementById('password').value;
+            const boardNum = document.getElementById('boardNum').value;
+
+            if (passwordInput.trim() == '' || passwordInput.trim() != password) {
+                alert("비밀번호가 다릅니다.");
+            } else {
+                window.location.href = `/delete/${boardNum}?password=${password}`;
+            }
+
+        })
+    </script>
+</body>
+</html>

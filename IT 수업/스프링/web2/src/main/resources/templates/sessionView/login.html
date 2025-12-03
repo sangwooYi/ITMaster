@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <span>session.get(키값) 으로 가져 올 수 있음</span>
+    <p th:text="${session.get('name')}"></p>
+
+    <div>
+        <!-- 스트링 변수명 같이 쓰고싶으면 || 로 감싸기   -->
+        <p th:text="|아이디:  ${userId}|"> </p>
+        <p th:text="|PW : ${password}|"> </p>
+    </div>
+</body>
+</html>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h2>현재 입력한 학생 정보</h2>
+
+    <th:block th:if="${student.number ne null}">
+        <div th:object="${student}">
+            <p>학번 : <span th:text="*{number}"></span></p>
+            <p>이름 : <span th:text="*{name}"></span></p>
+            <p>국어점수 : <span th:text="|*{korean}점|"></span></p>
+            <p>영어점수 : <span th:text="|*{english}점|"></span></p>
+            <p>수학점수 : <span th:text="|*{math}점|"></span></p>
+        </div>
+    </th:block>
+    <th:block th:if="${student.number eq null}">
+        <div>
+            해당 값으로 조회한 값이 없습니다 </br>
+            조회한 값 : <span th:text="${number}"></span>
+        </div>
+    </th:block>
+
+    <button><a th:href="@{/home}">홈으로 가기</a></button>
+</body>
+</html>

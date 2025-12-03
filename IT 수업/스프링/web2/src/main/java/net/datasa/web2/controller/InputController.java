@@ -51,4 +51,10 @@ public class InputController {
         model.addAttribute("person", person1);
         return "/param/path-variable";
     }
+
+    @GetMapping("/input5")
+    public String shookdai() {
+        return "birthday-form";
+    }
+
 }

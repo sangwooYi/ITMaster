@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <style>
+        p {
+            font-size: 12px;
+        }
+        table {
+            border-collapse: collapse;
+        }
+        td, th {
+            border: 2px solid black;
+        }
+    </style>
+</head>
+<body>
+    <h3>[ Thymeleaf 연습 2 ]</h3>
+
+    <h4> Map </h4>
+    <h5>자바 문법으로 하나씩 꺼내기</h5>
+    <p>tmpMap.get('kimchi') =  <span th:text="${tmpMap.get('kimchi')}"></span></p>
+    <p>그냥 맵.key 로도 접근가능 tmpMap.kimchi =  <span th:text="${tmpMap.kimchi}"></span></p>
+    <h5> for:each Map에도 사용 가능, Map 요소를 순회시켜줌</h5>
+    <div th:each="element, status : ${tmpMap}">
+        <p>status 관련 for:each  니까 동일하게 사용 가능 status.count = <span th:text="${status.count}"></span></p>
+        <h6>이게 기본 접근방식</h6>
+        <p>element.key = <span th:text="${element.key}"></span></p>
+        <p>element.value = <span th:text="${element.value}"></span></p>
+    </div>
+    <h4> List </h4>
+    <!-- /* status 에서 사용가능한 값은 .index, .count, .size, .first, .last 등등.. */   -->
+    <h5>당연히 for:each 사용</h5>
+    <div th:each="person, status : ${personList}">
+        <p>person.userName = <span th:text="${person.userName}"></span></p>
+        <h6>내부 Object 도 th:object로 접근 가능</h6>
+        <th:block th:object="${person}">
+            <p th:text="*{userName}"></p>
+            <p th:text="*{userID}"></p>
+        </th:block>
+    </div>
+    <hr>
+    <h4> 제어문 if unless </h4>
+
+    <div th:if="${name eq 'abc'}">name == abc 인 경우</div>
+    <div th:unless="${name eq 'abc'}">name != abc 인 경우 unless 사용</div>
+    <div th:if="${name ne 'abc'}">name != abc 인 경우 if 사용</div>
+
+    <!-- block 태그는 유효한 경우에는 안쪽 태그만 남기고 block 태그는 사라짐 -->
+    <th:block th:if="${name eq 'abc'}">
+        <p>th:block 있으면 안쪽 태그만 보여줌</p>
+    </th:block>
+
+    <h4> Switch-case </h4>
+    <div th:switch="${age}">
+        <!--  /* case에 걸리는 태그만 남기고 나머지는 전부 사라진다 */  -->
+        <p th:case="10">10</p>
+        <p th:case="20">20</p>
+        <p th:case="*">* 은 디폴트</p>
+    </div>
+    <hr>
+    <table style="width: 500px;">
+        <colgroup>
+            <col style="width: 10%">
+            <col style="width: 30%">
+            <col style="width: 30%">
+            <col style="width: 30%">
+        </colgroup>
+        <tr>
+            <th>No</th>
+            <th>ID</th>
+            <th>PW</th>
+            <th>이름</th>
+        </tr>
+        <!-- 여기서 status 는 그냥 내가 이름붙이기 나름, 타임리프에서 자동으로 지원해주는 값
+            .count => 현재 값의 몇번째인지
+            .index => 현재 값의 인덱스
+            .size => 지금 순회중인 리스트의 전체 사이즈
+            .even / .odd => 현재 값이 짝수번째인지 홀수 번째인지
+            .first => 첫번쨰 값인지 여부
+            .last => 마지막 값인지 여부
+        -->
+        <tr th:each="person, status : ${personList}">
+            <td th:text="${status.count}"></td>
+            <td th:text="${person.userID}"></td>
+            <td th:text="${person.password}"></td>
+            <td th:text="${person.userName}"></td>
+        </tr>
+    </table>
+    <hr>
+    <!--  안쪽 if 부분을 th:block 으로 쓰면 구조가 아래 구조로 유지
+      <div>
+        <p></p>
+        <p></p>
+        <p></p>
+      </div>
+         th:block 대신 div 구조같은걸 써버리면 구조가 바뀌어버림
+       <div>
+         <p></p>
+         <div>
+            <p></p>
+         </div>
+       </div>
+      -->
+    <!--    <div th:each="num : ${nums}">-->
+    <!--        <p th:text="${num}"></p>-->
+    <!--        <th:block th:if="${num gt 3}">-->
+    <!--            <p th:text="|3보다 큰 수임 ${num}|"></p>-->
+    <!--        </th:block>-->
+    <!--    </div>-->
+
+    <!-- #numbers.sequence 로 강제 순회도 가능 함-->
+    <!-- .sequence(a, b, c) a ~ b까지 c 씩 step,  c 생략하면 step은 1로 적용 (디폴트가 1)   -->
+    <!-- 파이썬 for 문에서 쓰는 range() 와 완전히 동일한 사용방법! -->
+    <th:block th:each="num, status : ${#numbers.sequence(1, 5)}">
+        <span th:text="${num}"></span> /
+    </th:block>
+    <hr>
+    <th:block th:each="num, status : ${#numbers.sequence(1, 5, 2)}">
+        <span th:text="${num}"></span> /
+    </th:block>
+    <hr>
+    <!--  step 음수 적용도 가능하다  -->
+    <th:block th:each="num, status : ${#numbers.sequence(5, 1, -1)}">
+        <span th:text="${num}"></span> /
+    </th:block>
+
+</body>
+</html>

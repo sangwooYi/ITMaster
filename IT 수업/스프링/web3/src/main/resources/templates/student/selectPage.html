@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <form th:action="@{/student/select/user}" method="get">
+        <label for="number">학생 넘버</label>
+        <input id="number" name="number">
+        <button>조회</button>
+    </form>
+</body>
+</html>

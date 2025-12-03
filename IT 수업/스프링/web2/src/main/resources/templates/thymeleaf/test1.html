@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h3>[ Thymeleaf 연습 1 ]</h3>
+
+    <h4>일반 변수 th:text=${}</h4>
+    <p>th:text=${str}=<span th:text="${str}"></span></p>
+
+    <h4>Object th:object=${} / 그 안에 필드접근은 *{}</h4>
+    <div th:object="${person}">
+        <p>Object 값 가져올때는 *{} 사용</p>
+        <p>userId=<span th:text="*{userID}"></span></p>
+        <p>userName=<sapn th:text="*{userName}"></sapn></p>
+    </div>
+    <p>물론 이렇게 오브젝트.필드명 으로 가져올수도 있음 person.userName=<span th:text="${person.userName}"></span></p>
+
+    <h4>링크도 가능</h4>
+    <a th:href="${url}" target="_blank">구글</a>
+
+    <h4>태그 포함 텍스트 text/utext</h4>
+    <p>th:text=<span th:text="${tag}"></span></p>
+    <p>th:utext=<span th:utext="${tag}"></span></p>
+    <!-- 일반 HTML 주석은 html 실행시 노출되나, 아래 타임리프 주석은 실행해보면 주석부분이 제거 된다.   -->
+    <!--/*
+        타임리프 주석
+    */-->
+
+    <!--/* 아래 주석의 경우 타임리프 동적실행시 주석 내용 노출/
+           static 하게 실행 때는 주석처리 되는 특수 용도 주석 */-->
+    <!--/*/
+     <p th:text="${str}">
+
+     </p>
+    /*/-->
+    <!-- + - * / %  -->
+    <!-- 컨트롤 + / 하고 그 안에다가 /**/ 작성 후 이 내부에다가 주석달자   -->
+    <!--/* 이렇게 */-->
+
+    <h4>연산자</h4>
+    <p>현재 num = <span th:text="${num}"></span></p>
+    <p>num*2 = <span th:text="${num}*2"></span></p>
+    <!-- > 는 gt , < 는 lt, >= 는 ge <= 는 le -->
+    <!-- && 는 and , || 는 or , ! 는 not  , == 는 eq,  != 는 ne -->
+    <p>num gt 0 = <span th:text="${num > 0}"></span></p>
+    <p>1 < num < 100 = <span th:text="${num ge 1 and num le 100}"></span></p>
+    <p>num 홀수 여부 = <span th:text="${(num%2) ne 0}"></span></p>
+    <p>z`str 은 'abc' 이다 = <span th:text="${str eq 'abc'}"></span></p>
+
+    <h4>경로 생성 및 하이퍼링크</h4>
+    <!-- 동적으로 현재 설정에 맞춰 경로를 설정해 줌 -->
+    <p><img th:src="@{/img/favicon.png}"/></p>
+
+    <!-- 동적으로 해당 경로로 만들어서 요청 해 줌 -->
+    <button><a th:href="@{/}">홈으로</a></button>
+
+    <h4>문자열 비교</h4>
+    <p>eq ${str eq 'abc'} = <span th:text="${str eq 'abc'}"></span></p>
+    <p>not 연산자 ${not (str eq 'abc')} = <span th:text="${not (str eq 'abc')}"></span></p>
+    <!-- 자바 서버에서 보내주기 때문에, 자바의 메서드를 그대로 활용 가능  -->
+    <p>.equals() ${str.equals('abc')} = <span th:text="${str.equals('abc')}"></span></p>
+
+    <h4>포매팅</h4>
+    <p>largeNum 그대로 = <span th:text="${largeNum}"></span></p>
+    <p>doubleNum 그대로 = <span th:text="${doubleNum}"></span></p>
+    <p>curDate 그대로 = <span th:text="${curDate}"></span></p>
+    <p>curDateTime 그대로 = <span th:text="${curDateTime}"></span></p>
+
+    <h5>#numbers 이용</h5>
+    <p>#numbers.formatInteger(num, 숫자, 'COMMA') = <span th:text="${#numbers.formatInteger(largeNum, 3, 'COMMA')}"></span></p>
+    <p>#numbers.formatDecimal(num, 숫자, 'COMMA', 숫자, 'POINT') = <span th:text="${#numbers.formatDecimal(largeNum, 3, 'COMMA', 2, 'POINT')}"></span></p>
+    <p>#numbers.formatPercent(num, 숫자, 숫자) =  <span th:text="${#numbers.formatPercent(perNum, 0, 2)}"></span></p>
+
+    <h5>#temporals 사용</h5>
+    <p>#temporals.format(date값, 'dd/MM/yyyy') = <span th:text="${#temporals.format(curDate, 'dd/MM/yyyy')}"></span></p>
+    <p>#temporals.format(date값, 'yyyy/MM/dd HH:mm') = <span th:text="${#temporals.format(curDateTime, 'yyyy/MM/dd HH:mm')}"></span></p>
+</body>
+</html>

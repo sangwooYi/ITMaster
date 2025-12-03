@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h1>[ localStorage 및 sessionStorage ]</h1>
+
+    <p>이름 : <input type="text" id="name"></p>
+
+    <p><button onclick="saveSession()">저장</button></p>
+    <p><button onclick="readSession()">읽기</button></p>
+    <p><button onclick="removeSession()">삭제</button></p>
+
+    <script>
+
+        function saveSession() {
+            const nameTag = document.getElementById('name');
+            const nameVal = nameTag.value;
+
+            localStorage.setItem('name', nameVal);
+            sessionStorage.setItem('name', nameVal);
+        }
+
+        function readSession() {
+            // 세션 스토리지는 브라우저 세션이 유지되는 동안 유지 ( 따라서 페이지, 탭이 바뀌면 값이 유지 안 됨)
+            // 로컬스토리지는 직접 지우거나, 브라우저 캐시를 날리지 않는한 계속 남아있음
+            console.log(`로컬스토리지: ${localStorage.getItem('name')}`)
+            console.log(`세션스토리지: ${sessionStorage.getItem('name')}`)
+        }
+        function removeSession() {
+            localStorage.removeItem('name');
+            sessionStorage.removeItem('name');
+        }
+
+    </script>
+</body>
+</html>

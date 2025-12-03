@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <!-- GET 과 동일한 경로로 잡으면 th:action 만 써놓아도 알아서 같은경로로 호출해줌! -->
+    <form th:action method="post">
+        <label for="number">학번 : </label>
+        <input id="number" name="number" type="text"/><br>
+        <label for="name">이름 : </label>
+        <input id="name" name="name" type="text"/><br>
+        <label for="korean">국어점수 : </label>
+        <input id="korean" name="korean" type="number"/><br>
+        <label for="english">영어점수 : </label>
+        <input id="english" name="english" type="number"/><br>
+        <label for="math">수학점수 : </label>
+        <input id="math" name="math" type="number"/><br>
+        <button type="submit">제출</button>
+    </form>
+</body>
+</html>

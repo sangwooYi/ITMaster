@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h3>Person 정보 조회</h3>
+    <th:block th:if="${person eq null}">
+        <p>해당 정보로 조회된 값이 없습니다.</p>
+        <p>조회 한 userID : <span th:text="${userId}"></span></p>
+    </th:block>
+
+    <th:block th:if="${person ne null}" th:object="${person}">
+        <p>조회 한 userID : <span th:text="*{userId}"></span></p>
+        <p>조회 한 userName : <span th:text="*{userName}"></span></p>
+        <p>조회 한 age : <span th:text="*{age}"></span></p>
+    </th:block>
+
+    <button><a th:href="@{/person/all}">뒤로</a></button>
+</body>
+</html>
