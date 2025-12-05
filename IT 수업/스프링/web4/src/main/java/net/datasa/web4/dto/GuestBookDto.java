@@ -1,7 +1,6 @@
 package net.datasa.web4.dto;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -20,5 +19,13 @@ public class GuestBookDto {
     @NotBlank
     private String message;
 
+    private Integer recommend;
+
+    private Integer reportCount;
+
+    private String userIp;
+
     private LocalDateTime inputDate;
+
+    private LocalDateTime updateDate;
 }

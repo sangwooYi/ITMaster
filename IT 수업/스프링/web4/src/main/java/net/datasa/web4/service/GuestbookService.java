@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,6 +45,9 @@ public class GuestbookService {
                 .userName(guestBookDto.getUserName())
                 .password(guestBookDto.getPassword())
                 .message(guestBookDto.getMessage())
+                .userIp(guestBookDto.getUserIp())
+                .recommend(0)
+                .reportCount(0)
                 .build();
 
         GuestbookEntity resultEntity = guestbookRepository.save(guestbookEntity);
@@ -101,6 +105,30 @@ public class GuestbookService {
 
     }
 
+    public void recommend(Integer boardNum) {
+
+        GuestbookEntity guestbookEntity = guestbookRepository.findById(boardNum).orElseThrow(() -> new EntityNotFoundException("없음"));
+        guestbookEntity.setRecommend(guestbookEntity.getRecommend()+1);
+        guestbookRepository.save(guestbookEntity);
+    }
+
+    /**
+     *
+     * @param boardNum
+     * @return
+     */
+    public Integer reportBoard(Integer boardNum) {
+
+        GuestbookEntity guestbookEntity = guestbookRepository.findById(boardNum).orElseThrow(() -> new EntityNotFoundException("없음"));
+
+        Integer curReportCnt = guestbookEntity.getReportCount()+1;
+        guestbookEntity.setReportCount(curReportCnt);
+
+        guestbookRepository.save(guestbookEntity);
+
+        return curReportCnt;
+    }
+
     public GuestBookDto convertToDto(GuestbookEntity guestbookEntity) {
 
         GuestBookDto guestBookDto = new GuestBookDto();
@@ -110,33 +138,11 @@ public class GuestbookService {
         guestBookDto.setUserName(guestbookEntity.getUserName());
         guestBookDto.setMessage(guestbookEntity.getMessage());
         guestBookDto.setInputDate(guestbookEntity.getInputDate());
+        guestBookDto.setUpdateDate(guestbookEntity.getUpdateDate());
+        guestBookDto.setRecommend(guestbookEntity.getRecommend());
+        guestBookDto.setReportCount(guestbookEntity.getReportCount());
+        guestBookDto.setUserIp(guestbookEntity.getUserIp());
 
         return guestBookDto;
     }
-
-    public GuestbookEntity convertToEntity(GuestBookDto guestBookDto) {
-
-        GuestbookEntity guestbookEntity = new GuestbookEntity();
-
-        // 존재하는 값만 넣어주기 (save 때 영속성 에러 방지 )
-        if (!ObjectUtils.isEmpty(guestBookDto.getBoardNum())) {
-            guestbookEntity.setBoardNum(guestBookDto.getBoardNum());
-        }
-        if (StringUtils.hasText(guestBookDto.getPassword())) {
-            guestbookEntity.setPassword(guestBookDto.getPassword());
-        }
-        if (StringUtils.hasText(guestBookDto.getUserName())) {
-            guestbookEntity.setUserName(guestBookDto.getUserName());
-        }
-        if (StringUtils.hasText(guestBookDto.getMessage())) {
-            guestbookEntity.setMessage(guestBookDto.getMessage());
-        }
-        if (!ObjectUtils.isEmpty(guestBookDto.getInputDate())) {
-            guestbookEntity.setInputDate(guestBookDto.getInputDate());
-        }
-
-        return guestbookEntity;
-
-    }
-
 }

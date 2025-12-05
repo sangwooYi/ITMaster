@@ -1,12 +1,15 @@
 package net.datasa.web4.controller;
 
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.datasa.web4.dto.GuestBookDto;
 import net.datasa.web4.service.GuestbookService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -48,7 +51,8 @@ public class GuestbookController {
     }
 
     @PostMapping("/write")
-    public String saveBoard(@Validated @ModelAttribute("guestbook") GuestBookDto guestBookDto,
+    public String saveBoard(HttpServletRequest request,
+                            @Validated @ModelAttribute("guestbook") GuestBookDto guestBookDto,
                             RedirectAttributes redirectAttributes,
                             BindingResult bindingResult, Model model) {
 
@@ -59,6 +63,8 @@ public class GuestbookController {
             return "write";
 
         }
+        String curIp = request.getRemoteAddr();
+        guestBookDto.setUserIp(curIp);
 
         GuestBookDto resultDto = guestbookService.saveGuestBook(guestBookDto);
 
@@ -133,5 +139,38 @@ public class GuestbookController {
 
         redirectAttributes.addFlashAttribute("boardNum", boardNum);
         return "redirect:/read/{boardNum}";
+    }
+
+    @GetMapping("/recommend/{boardNum}")
+    public String recommendBoard(HttpServletRequest request,
+                                 @PathVariable Integer boardNum) {
+
+        log.info("boardNum = {}" , boardNum);
+        log.info("requestIP = {}", request.getRemoteAddr());
+
+        HttpSession httpSession = request.getSession();
+        // | 가 구분자
+        String sessionKey = request.getRemoteAddr() + "|" + Integer.toString(boardNum);
+
+        if (ObjectUtils.isEmpty(httpSession.getAttribute(sessionKey))) {
+            try {
+                guestbookService.recommend(boardNum);
+                httpSession.setAttribute(sessionKey, "1");
+            } catch (EntityNotFoundException e) {
+                log.info("error ! : {}", e.getMessage());
+            }
+        }
+
+        return  "redirect:/all";
+    }
+
+    @GetMapping("/report/{boardNum}")
+    public String reportBoard(@PathVariable Integer boardNum) {
+        try {
+            guestbookService.reportBoard(boardNum);
+        } catch (EntityNotFoundException e) {
+            log.error("error!! : {}", e.getMessage());
+        }
+        return  "redirect:/all";
     }
 }

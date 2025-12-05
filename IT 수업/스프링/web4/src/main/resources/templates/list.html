@@ -2,6 +2,7 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <link rel="icon" href="https://i.namu.wiki/i/_gAD8r8NImxVgRK31XohV58sp3zmDZGi1u73QyTUgwWeg15Sve1n-5nQqcLctSugUvVmlqSOP1sJ6iLUWczcvg.webp">
     <title>Title</title>
     <!-- 부트스트랩 css  -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
@@ -10,11 +11,59 @@
         .none {
             display: none;
         }
+        .report-danger {
+            border:2px solid #e0394a;
+        }
+
+        #aim-img {
+            display: inline;
+            position: absolute;
+            height: 300px;
+            z-index: -1;
+            transform: translate(-200px, -80px);
+            cursor: pointer;
+            transition: transform 0.3s ease-in-out;
+        }
+        #aim-img:hover {
+            transform: scale(1.2);
+            z-index: 99;
+        }
+
+        #aim-img2 {
+            display: inline;
+            position: absolute;
+            height: 500px;
+            z-index: -1;
+            cursor: pointer;
+            transform: translate(1000px, -100px);
+            transition: transform 0.3s ease-in-out;
+        }
+        #aim-img2:hover {
+            transform: scale(1.1);
+            transform: translate(800px, -50px);
+            z-index: 99;
+        }
+
+        #aim-btn {
+            display: flex;
+            flex-direction: column;`
+            position: fixed;
+            z-index: 99;
+        }
     </style>
 </head>
 <body class="container">
+
+    <img th:src="@{/img/aimyon.png}"  id="aim-img">
+    <img th:src="@{/img/aimyon2.png}"  id="aim-img2">
     <h2 class="text-center my-5">전체 리스트<span></span></h2>
 
+    <div id="aim-btn">
+        <a href="https://www.youtube.com/watch?v=3ve2xQxfhbE" class="link-danger link-underline-opacity-0">
+            <img th:src="@{/img/aimyon3.png}" height="80px">
+            <span class="text-danger">유튜브 공식 채널로 이동</span>
+        </a>
+    </div>
 
     <th:block th:if="${guestbookList eq null}">
         <h3 class="text-center my-5">조회 결과가 없습니다 잔넨</h3>
@@ -27,27 +76,37 @@
     <th:block th:unless="${guestbookList eq null}">
         <table class="table table-hover" style="width: 1200px; margin: 5px auto;">
             <colgroup>
-                <col style="width: 20%;"><col style="width: 40%;"><col style="width: 20%;"><col style="width:20%;">
+                <col style="width: 10%;"><col style="width: 30%;"><col style="width: 20%;">
+                <col style="width: 15%;"><col style="width: 15%;"><col style="width: 10%;">
             </colgroup>
             <tr class="table-dark">
                 <th>Board No.</th>
                 <th>작성자</th>
                 <th>작성일자</th>
+                <th>추천</th>
                 <th>이동</th>
+                <th>신고</th>
             </tr>
 
             <th:block th:each="guestbook : ${guestbookList}">
-                <tr style="cursor: pointer" name="bookRow">
+                <tr th:if="${guestbook.reportCount > 10}">
+                    <td colspan="6" class="text-danger fw-bold">
+                        <span th:text="|${guestbook.boardNum} 번글 |"></span>신고 갯수 초과!!!! <span th:text="|현재 ${guestbook.reportCount} 개|"></span>
+                    </td>
+                </tr>
+                <tr style="cursor: pointer" name="bookRow" th:classappend="${guestbook.reportCount > 10} ? 'report-danger' : ''">
                     <td th:text="${guestbook.boardNum}"></td>
                     <td th:text="${guestbook.userName}"></td>
                     <!--  포매팅 그냥 타임리프 활용하자!  -->
                     <td th:text="${#temporals.format(guestbook.inputDate, 'yyyy.MM.dd HH:mm')}"></td>
-                    <td><button type="button" class="btn btn-secondary btn-sm col-3"><a class="link-light link-underline-opacity-0" th:href="@{/read/{boardNum}(boardNum=${guestbook.boardNum})}">이동</a></button></td>
+                    <td><a class="link-dark link-underline-opacity-0 mov" th:href="@{/recommend/{boardNum}(boardNum=${guestbook.boardNum})}"><img class="me-3" width="60px;" height="50px;" src="https://image.fmkorea.com/files/attach/new3/20231017/494354581/6060821909/6289840451/cdc4c03089eed1e6788a3432e0d03f90.png" /> <span th:text="|${guestbook.recommend} 개|"></span></a></td>
+                    <td style="margin: 5px auto"><button type="button" class="btn btn-secondary btn-sm mov"><a class="link-light link-underline-opacity-0 mov" th:href="@{/read/{boardNum}(boardNum=${guestbook.boardNum})}">이동</a></button>
+                    <td style="margin: 5px auto" ><button type="button" class="btn btn-warning btn-sm  mov" name="reportBtn" th:id-data="${guestbook.boardNum}">신고</button></td>
                 </tr>
                 <tr class="inner-text none">
                     <!-- 입력값 그대로 보여주려면 textArea 혹은 pre 태그 활용! -->
-                    <td colspan="3">세부 내용 : <pre th:text="${guestbook.message}"></pre></td>
-                    <td><button type="button" class="btn btn-danger btn-sm col-3"
+                    <td colspan="5">세부 내용 : <pre th:text="${guestbook.message}"></pre></td>
+                    <td><button type="button" class="btn btn-danger btn-sm  "
                                th:id-data="${guestbook.boardNum}" th:pw-data="${guestbook.password}" name="deleteBtn">삭제</button></td>
                 </tr>
             </th:block>
@@ -78,11 +137,18 @@
             // name 값 통해서 가져오는 방법 기억!  (속성 쿼리 셀렉터)
             const tagList = document.querySelectorAll('[name="bookRow"]');
             const delBtnList = document.querySelectorAll('[name="deleteBtn"]')
+            const reportBtnList = document.querySelectorAll('[name="reportBtn"]');
+
             tagList.forEach((tag) => {
 
-                tag.addEventListener('click', () => {
+                tag.addEventListener('click', (e) => {
+                    // 이동 버튼쪽은 세부창 토글 무시
+                    if (e.target.classList.contains('mov')) {
+                        return;
+                    }
                     let curTag = tag.nextElementSibling;
                     curTag.classList.toggle('none');
+
                 })
 
             })
@@ -100,6 +166,18 @@
                         window.location.href = `/delete/${boardNum}?password=${password}`;
                     }
 
+                })
+            })
+
+            reportBtnList.forEach((btn) => {
+
+                btn.addEventListener('click', () => {
+                    const boardNum = btn.getAttribute('id-data');
+                    if (confirm("진짜 신고할거에요?")) {
+                        window.location.href = `/report/${boardNum}`;
+                    } else {
+                        alert("아리가또");
+                    }
                 })
             })
         })
