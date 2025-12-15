@@ -7,6 +7,8 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Builder
 @Getter
@@ -21,6 +23,14 @@ public class MemberEntity {
     @Id
     @Column(name="user_id")
     private String userId;
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    private List<BoardEntity> boardList = new ArrayList<>();
+
+    public void addBoard(BoardEntity board) {
+        board.setMember(this);
+        boardList.add(board);
+    }
 
     @Column
     private String password;

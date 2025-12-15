@@ -1,7 +1,9 @@
 package net.datasa.web5.controller;
 
 import lombok.extern.slf4j.Slf4j;
+import net.datasa.web5.dto.BoardDto;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -15,4 +17,11 @@ public class BoardController {
         return "/board/list";
     }
 
+    @GetMapping("/addForm")
+    public String addForm(Model model ){
+
+        model.addAttribute("board", new BoardDto());
+
+        return "board/boardAddForm";
+    }
 }

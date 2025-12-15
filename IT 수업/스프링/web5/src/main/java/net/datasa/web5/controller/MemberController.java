@@ -16,7 +16,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.lang.reflect.Member;
+import java.util.ArrayList;
+import java.util.List;
 
 @Slf4j
 @Controller
@@ -43,8 +44,8 @@ public class MemberController {
     public String saveMember(@Validated @ModelAttribute("member") MemberDto member,
                              BindingResult bindingResult) {
 
-        if ("false".equals(member.getDupChecked())){
-            bindingResult.addError(new FieldError("member", "userId", "비밀번호 중복입니다."));
+        if (StringUtils.hasText(member.getUserId()) && "false".equals(member.getDupChecked())){
+            bindingResult.addError(new FieldError("member", "userId", "아이디 중복 확인해주세요."));
         }
 
         if (!StringUtils.hasText(member.getPasswordRe())) {
@@ -154,5 +155,90 @@ public class MemberController {
         memberService.updateMember(member);
         
         return "redirect:/";
+    }
+
+    @GetMapping("/search")
+    public String searchPage(Model model) {
+
+        List<MemberDto> memberList = memberService.findAll();
+
+        model.addAttribute("memberList", memberList);
+        model.addAttribute("searchText", "");
+        model.addAttribute("category", "userId");
+
+        return "/member/search";
+    }
+    @PostMapping("/search")
+    public String searchUser(@RequestParam String searchText,
+                             @RequestParam String category, Model model) {
+
+        List<MemberDto> memberList = new ArrayList<>();
+        log.info("category ={}", category);
+        log.info("searchText = {}", searchText);
+        switch (category) {
+            case "userId": memberList = memberService.findAllByUserIdLike(searchText);
+                            break;
+            case "userName" : memberList = memberService.findAllByUserNameLike(searchText);
+                            break;
+            default:
+        }
+        model.addAttribute("memberList", memberList);
+        model.addAttribute("searchText", searchText);
+        model.addAttribute("category", category);
+
+        return "/member/search";
+    }
+
+    @GetMapping("/searchDetail")
+    public String redirectSearchPage() {
+        return "redirect:/member/search";
+    }
+    /**
+     *  상세검색
+     */
+    @PostMapping("/searchDetail")
+    public String searchDetail(@RequestParam String searchName,
+                               @RequestParam String searchMail,
+                               @RequestParam String searchNumber,
+                               Model model) {
+
+        List<MemberDto> memberList = memberService.findAllByDetailSearch(searchName, searchMail, searchNumber);
+
+
+        model.addAttribute("isChecked", true);
+        model.addAttribute("searchName", searchName);
+        model.addAttribute("searchMail", searchMail);
+        model.addAttribute("searchNumber", searchNumber);
+        model.addAttribute("memberList", memberList);
+
+        return "member/search";
+    }
+
+    @GetMapping("/findId")
+    public String goFindIdForm(Model model) {
+
+        model.addAttribute("msg", "");
+        model.addAttribute("userName", "");
+        model.addAttribute("mailAddress", "");
+
+        return "member/findId";
+    }
+
+    @PostMapping("/findId")
+    public String searchId(@RequestParam String userName,
+                           @RequestParam String mailAddress,
+                           Model model) {
+
+        String findResult = memberService.findUserId(userName, mailAddress);
+
+        if (!StringUtils.hasText(findResult)) {
+           findResult = "조회 결과가 없습니다.";
+        }
+
+        model.addAttribute("msg", findResult);
+        model.addAttribute("userName", userName);
+        model.addAttribute("mailAddress", mailAddress);
+
+        return "member/findId";
     }
 }

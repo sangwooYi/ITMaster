@@ -10,3 +10,16 @@ create table member (
                         register_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TABLE board (
+                       board_num INT AUTO_INCREMENT PRIMARY KEY ,
+                       user_id VARCHAR(100) ,
+                       title VARCHAR(1000) NOT NULL,
+                       contents TEXT NOT NULL,
+                       view_count INT DEFAULT 0,
+                       like_count INT DEFAULT 0,
+                       original_name VARCHAR(500),
+                       file_name VARCHAR(300),
+                       created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                       update_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                       CONSTRAINT FOREIGN KEY (user_id) REFERENCES member (user_id) ON DELETE CASCADE
+);

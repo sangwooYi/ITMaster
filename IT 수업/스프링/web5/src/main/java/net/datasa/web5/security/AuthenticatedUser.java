@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Locale;
 
 @Builder
 @Getter
@@ -24,7 +25,11 @@ public class AuthenticatedUser implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singletonList(new SimpleGrantedAuthority(roleName));
+    
+        // 대문자로 바꿔줘야 비교 가능
+        String dbRole = roleName.toUpperCase();
+
+        return Collections.singletonList(new SimpleGrantedAuthority(dbRole));
     }
 
     // 이게 아이디 체크
@@ -45,7 +50,7 @@ public class AuthenticatedUser implements UserDetails {
     }
     // 역할
     public String getRoleName() {
-        return this.getRoleName();
+        return this.roleName;
     }
 
     // 아래 주석처리한 애들은 어차피 디폴트 값이 return true 임

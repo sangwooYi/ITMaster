@@ -13,11 +13,13 @@ public class WebSecurityConfig {
 
     private static final String[] PUBLIC_URS = {
             "/",
+            "/security",
             "/img/**",
             "/css/**",
             "/js/**",
             "/member/checkId",
             "/member/join",
+            "/member/findId",
             "/member/test"
     };
 

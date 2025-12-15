@@ -10,6 +10,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Slf4j
 @RequiredArgsConstructor
 @Service
@@ -53,6 +56,15 @@ public class MemberService {
         return result;
     }
 
+    public List<MemberDto> findAll() {
+        List<MemberEntity> memberEntityList = memberRepository.findAll();
+
+        List<MemberDto> memberList = memberEntityList.stream().map(member ->
+                this.convertToDto(member)).toList();
+
+        return memberList;
+    }
+
     public boolean chkPassword(String userId, String chkPassword) {
 
         MemberEntity entity = memberRepository.findById(userId).orElse(null);
@@ -86,6 +98,50 @@ public class MemberService {
         memberRepository.save(entity);
 
         return memberDto;
+    }
+
+    public List<MemberDto> findAllByUserNameLike(String userName) {
+
+        List<MemberDto> memberList = memberRepository.findAllByUserNameContainingOrderByUserName(userName)
+                .stream().map(memberEntity -> this.convertToDto(memberEntity)).toList();
+
+
+        return memberList;
+    }
+
+    public List<MemberDto> findAllByUserIdLike(String userId) {
+
+        List<MemberDto> memberList = memberRepository.findAllByUserIdContaining(userId)
+                .stream().map(memberEntity -> this.convertToDto(memberEntity)).toList();
+
+
+        return memberList;
+    }
+
+    public List<MemberDto> findAllByDetailSearch(String userName, String mailAddress, String phoneNumber) {
+        List<MemberDto> memberList = memberRepository.findAllByUserNameContainingAndMailAddressContainingAndPhoneNumberContaining(userName, mailAddress, phoneNumber)
+                .stream().map(memberEntity -> this.convertToDto(memberEntity)).toList();
+
+        return memberList;
+    }
+
+    public String findUserId(String userName, String mailAddress) {
+
+        List<MemberEntity> memberEntityList = memberRepository.findAllByUserNameAndMailAddress(userName, mailAddress);
+
+        List<String> findIdList = new ArrayList<>();
+
+        for (MemberEntity memberEntity : memberEntityList) {
+            String userId = memberEntity.getUserId();
+
+            userId = userId.substring(0, userId.length()-3) + "***";
+
+            findIdList.add(userId);
+        }
+
+        String result = findIdList.stream().reduce("", (subStr, cur)
+                -> subStr.equals("") ? subStr.concat(cur) : subStr.concat(", ").concat(cur));
+        return result;
     }
 
     public MemberDto convertToDto(MemberEntity memberEntity) {

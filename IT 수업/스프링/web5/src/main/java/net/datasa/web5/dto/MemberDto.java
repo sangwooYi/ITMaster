@@ -10,7 +10,7 @@ public class MemberDto {
 
 
     @NotBlank
-    @Size(min = 3, max = 12)
+    @Size(min = 4, max = 12)
     private String userId;
 
     @NotBlank
