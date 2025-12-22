@@ -7,11 +7,81 @@
 
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.26.4/dist/sweetalert2.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <style>
+        .img-back {
+            background-image: url("/img/aimyon6.png");
+            background-size: cover;
+            height: 100vh;
+            width: 100%;
+            z-index: -99;
+            position: absolute;
+            top: 0px;
+        }
+        .img-back::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: white;
+            opacity: 0.05;
+            z-index: -1;
+        }
+        .board-row {
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
-    <p>list</p>
+    <span class="img-back"></span>
+
+    <div class="container d-flex flex-column justify-content-center">
+        <h2 class="text-center my-5">[ 전체 리스트 ]</h2>
+        <table class="table mt-2">
+            <colgroup>
+                <col style="width: 10%;">
+                <col style="width: 35%;">
+                <col style="width: 25%;">
+                <col style="width: 30%;">
+            </colgroup>
+            <thead>
+            <tr>
+                <th scope="col">No.</th>
+                <th scope="col">제목</th>
+                <th scope="col">작성자</th>
+                <th scope="col">일자</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="board : ${boardList}" class="board-row">
+                <td th:text="${board.boardNum}" name="boardNum"></td>
+                <td th:text="${board.title}"></td>
+                <td th:text="${board.userName}"></td>
+                <td th:text="${#temporals.format(board.createdDate, 'yyyy-MM-dd HH:mm')}"></td>
+            </tr>
+            </tbody>
+        </table>
+        <div class="col-３">
+            <button th:onclick="|location.href='@{/board/addForm}'|" class="btn btn-primary">글 작성</button>
+            <button th:onclick="|location.href='@{/}'|" class="btn btn-secondary mx-2">돌아가기</button>
+        </div>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.26.4/dist/sweetalert2.all.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+
+    <script>
+         const boardList = document.querySelectorAll('.board-row');
+
+         boardList.forEach((boardTag) => {
+             boardTag.addEventListener('click', () => {
+
+                const boardNum = boardTag.querySelector('[name="boardNum"]').innerText;
+
+                location.href = `/board/read/${boardNum}`;
+             })
+         })
+    </script>
 </body>
 </html>

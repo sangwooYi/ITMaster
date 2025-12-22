@@ -32,6 +32,14 @@ public class MemberEntity {
         boardList.add(board);
     }
 
+    @OneToMany(mappedBy = "reply", cascade = CascadeType.ALL)
+    private List<ReplyEntity> replyList = new ArrayList<>();
+
+    private void addReply(ReplyEntity reply) {
+        reply.setMember(this);
+        replyList.add(reply);
+    }
+
     @Column
     private String password;
 

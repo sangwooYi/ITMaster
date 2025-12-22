@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="https://i.namu.wiki/i/_gAD8r8NImxVgRK31XohV58sp3zmDZGi1u73QyTUgwWeg15Sve1n-5nQqcLctSugUvVmlqSOP1sJ6iLUWczcvg.webp">
+    <title>Aim Store</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.26.4/dist/sweetalert2.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+
+    <style>
+        .img-back {
+            background-image: url("/img/aimyon5.png");
+            background-size: cover;
+            height: 100vh;
+            width: 100%;
+            z-index: -99;
+            position: absolute;
+            top: 0px;
+        }
+        .img-back::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: white;
+            opacity: 0.1;
+            z-index: -1;
+        }
+        .container {
+            width: 70vw;
+        }
+    </style>
+
+</head>
+<body>
+    <span class="img-back"></span>
+
+    <div class="container text-center d-flex flex-column justify-content-center" style="margin: 5px auto;">
+        <h2>[ 글 상세 ]</h2>
+        <table class="my-3" style="border-spacing: 20px;" th:object="${board}">
+            <colgroup>
+                <col style="width: 30%">
+                <col style="width: 70%">
+            </colgroup>
+            <tr>
+                <th><label for="title">제목</label></th>
+                <td><input  id="title" name="title" th:value="*{title}" class="form-control"></td>
+            </tr>
+            <tr>
+                <th>내용</th>
+                <td><textarea name="content" th:text="*{content}" th:value="*{content}" style="resize: none" class="form-control"></textarea></td>
+            </tr>
+            <tr>
+                <th>첨부파일</th>
+                <td>
+                    <a th:href="@{/board/download/{boardNum}(boardNum=*{boardNum})}">
+                        <span th:text="*{originalName}"></span>
+                    </a>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <button type="submit" class="btn btn-primary">글 작성</button>
+                    <button type="button" th:onclick="|location.href='@{/board/list}'|" class="btn btn-secondary">돌아가기</button>
+                </td>
+            </tr>
+        </table>
+        <div class="my-3">
+            <form th:action="@{/board/addReply}" th:object="${reply}" method="post" class="d-flex flex-row">
+                <input type="hidden" name="boardNum" th:value="${board.boardNum}">
+                <label for="reply" class="col-1">댓글 : </label>
+                <input id="reply" name="content" th:value="*{content}" class="form-control col">
+                <button class="btn btn-secondary ms-2 col-1" type="submit">확인</button>
+            </form>
+        </div>
+        <div class="my-3">
+            <table>
+                <tr>
+                    <th>번호</th>
+                    <th>내용</th>
+                    <th>작성 시간</th>
+                </tr>
+                <tr th:each="reply : ${replyList}">
+                    <td th:text="${reply.replyNum}"></td>
+                    <td th:text="${reply.content}"></td>
+                    <td th:text="${#temporals.format(reply.createTime, 'yyyy-MM-dd HH:mm')}"></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.26.4/dist/sweetalert2.all.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+</body>
+</html>

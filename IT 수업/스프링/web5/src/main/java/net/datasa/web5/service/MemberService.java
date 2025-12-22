@@ -1,5 +1,6 @@
 package net.datasa.web5.service;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.datasa.web5.dto.MemberDto;
@@ -16,6 +17,7 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 @Service
+@Transactional
 public class MemberService {
 
     // 암호화 인코더

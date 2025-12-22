@@ -36,25 +36,32 @@
 <body>
     <span class="img-back"></span>
 
-    <div class="container text-center">
-        <form>
+    <div class="container text-center" style="margin: 5px auto;">
+        <!-- 첨부파일 넘기려면 enctype 설정 되어있어야 함 ! -->
+        <form th:action method="post" th:object="${board}" enctype="multipart/form-data">
             <h2>[ 글쓰기 ]</h2>
-            <table>
+            <table class="my-3" style="border-spacing: 20px;">
                 <colgroup>
                     <col style="width: 30%">
                     <col style="width: 70%">
                 </colgroup>
                 <tr>
                     <th><label for="title">제목</label></th>
-                    <td><input id="title" name="title"></td>
+                    <td><input  id="title" name="title" th:value="*{title}" class="form-control"></td>
                 </tr>
                 <tr>
                     <th>내용</th>
-                    <td></td>
+                    <td><textarea name="content" th:value="*{content}" style="resize: none" class="form-control"></textarea></td>
                 </tr>
                 <tr>
-                    <th>파일첨부</th>
-                    <td></td>
+                    <th><label for="uploadFile">첨부파일</label></th>
+                    <td><input type="file" id="uploadFile" name="uploadFile"  class="form-control"></td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <button type="submit" class="btn btn-primary">글 작성</button>
+                        <button type="button" th:onclick="|location.href='@{/}'|" class="btn btn-secondary">돌아가기</button>
+                    </td>
                 </tr>
             </table>
         </form>
