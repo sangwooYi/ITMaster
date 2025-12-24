@@ -10,6 +10,7 @@ import net.datasa.web5.service.BoardService;
 import net.datasa.web5.service.ReplyService;
 import org.hibernate.action.internal.EntityActionVetoException;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -34,13 +35,21 @@ public class BoardController {
     // org.springframework.beans.factory.annotation 이 경로의 @Value 를 써야한다.
     @Value("${board.uploadPath}")
     String uploadPath;
+    @Value("${board.pageSize}")
+    int pageSize;
 
     @GetMapping("/list")
-    public String list(Model model) {
+    public String list(Model model,
+                       @RequestParam(defaultValue = "1") int pageNum,
+                       @RequestParam(defaultValue = "") String searchType,
+                       @RequestParam(defaultValue = "") String searchWord) {
 
-        List<BoardDto> boardDtoList = boardService.findAll();
+        Page<BoardDto> boardDtoList = boardService.getList(pageNum, pageSize, searchType, searchWord);
 
         model.addAttribute("boardList", boardDtoList);
+        model.addAttribute("pageNum", pageNum);
+        model.addAttribute("searchType", searchType);
+        model.addAttribute("searchWord", searchWord);
 
         return "/board/list";
     }
@@ -135,6 +144,21 @@ public class BoardController {
         }
 
         redirectAttributes.addAttribute("boardNum", replyDto.getBoardNum());
+        return "redirect:/board/read/{boardNum}";
+    }
+
+    @PostMapping("/deleteReply")
+    public String deleteReply(@RequestParam Integer boardNum,
+                              @RequestParam Integer replyNum,
+                              RedirectAttributes redirectAttributes) {
+
+        try {
+            replyService.deleteReply(replyNum);
+        } catch (Exception e){
+            redirectAttributes.addAttribute("err", e.getMessage());
+        }
+
+        redirectAttributes.addAttribute("boardNum", boardNum);
         return "redirect:/board/read/{boardNum}";
     }
 }

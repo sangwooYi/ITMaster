@@ -12,6 +12,9 @@ import net.datasa.web5.entity.MemberEntity;
 import net.datasa.web5.repository.BoardRepository;
 import net.datasa.web5.repository.MemberRepository;
 import net.datasa.web5.util.FileManager;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.util.FileCopyUtils;
@@ -100,9 +103,32 @@ public class BoardService {
         }
     }
 
+    public Page<BoardDto> getList(int page, int pageSize, String searchType, String searchWord) {
+        page--;
+
+        Pageable pageable = PageRequest.of(page, pageSize, Sort.Direction.DESC, "createdDate");
+
+        Page<BoardEntity> entityPage = null;
+
+        switch (searchType) {
+            case "title":
+                entityPage = boardRepository.findByTitleContaining(searchWord, pageable);
+                break;
+            case "content":
+                entityPage = boardRepository.findByContentContaining(searchType, pageable);
+                break;
+            default:
+                entityPage = boardRepository.findAll(pageable);
+                break;
+        }
+        Page<BoardDto> pageList = entityPage.map(entity -> this.convertEntityToDto(entity));
+
+        return pageList;
+    }
+
     public List<BoardDto> findAll() {
 
-        List<BoardEntity> boardEntities = boardRepository.findAll(Sort.by("boardNum"));
+        List<BoardEntity> boardEntities = boardRepository.findAll(Sort.by("createdDate ").descending());
 
         List<BoardDto> boardDtoList = new ArrayList<>();
 

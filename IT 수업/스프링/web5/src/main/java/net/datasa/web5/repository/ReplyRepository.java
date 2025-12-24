@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface ReplyRepository extends JpaRepository<ReplyEntity, Integer> {
 
-    List<ReplyEntity> findAllByBoardNum(Integer boardNum);
+    List<ReplyEntity> findAllByBoard(BoardEntity board);
 
-    Integer board(BoardEntity board);
+    BoardEntity board(BoardEntity board);
 }

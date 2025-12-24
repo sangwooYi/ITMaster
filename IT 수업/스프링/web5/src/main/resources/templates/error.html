@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<!-- xmlns:sec="http://www.thymeleaf.org/extras/spring-security" 추가해줘야
+시큐리티 인증정보를 제대로 받아올 수 있다! -->
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="https://i.namu.wiki/i/_gAD8r8NImxVgRK31XohV58sp3zmDZGi1u73QyTUgwWeg15Sve1n-5nQqcLctSugUvVmlqSOP1sJ6iLUWczcvg.webp">
+    <title>Aim Store</title>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .img-back {
+            background-image: url("/img/aimyon8.jpg");
+            height: 100vh;
+            width: 100%;
+            z-index: -99;
+            position: absolute;
+            top: 0px;
+            left: 0px;
+        }
+        /* 배경화면 필터 씌우려면 이렇게 가상요소 사용 */
+        .img-back::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: white;
+            opacity: 0.1;
+            z-index: -1;
+        }
+        li {
+            text-align: center;
+            list-style: none;
+            width: 300px;
+            padding: 5px;
+            margin: 10px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);;
+        }
+        a {
+            text-decoration-line: none;
+            color: black;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <span class="img-back"></span>
+    <h2> !!! NOT FOUND !!! </h2>
+</body>
+</html>

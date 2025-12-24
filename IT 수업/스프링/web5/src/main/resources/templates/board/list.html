@@ -36,8 +36,12 @@
 <body>
     <span class="img-back"></span>
 
+    <input type="hidden" id="totalPage" th:value="${boardList.getTotalPages()}">
+    <input type="hidden" id="pageNum" th:value="${pageNum}">
+
     <div class="container d-flex flex-column justify-content-center">
         <h2 class="text-center my-5">[ 전체 리스트 ]</h2>
+
         <table class="table mt-2">
             <colgroup>
                 <col style="width: 10%;">
@@ -62,6 +66,8 @@
             </tr>
             </tbody>
         </table>
+        <ul class="col-３ pagination" id="pagingTag">
+        </ul>
         <div class="col-３">
             <button th:onclick="|location.href='@{/board/addForm}'|" class="btn btn-primary">글 작성</button>
             <button th:onclick="|location.href='@{/}'|" class="btn btn-secondary mx-2">돌아가기</button>
@@ -81,6 +87,43 @@
 
                 location.href = `/board/read/${boardNum}`;
              })
+         })
+
+         document.addEventListener('DOMContentLoaded', () => {
+
+             const totalPage = document.getElementById('totalPage').value;
+             let curPage = document.getElementById('pageNum').value;
+
+             const pagingTag = document.getElementById('pagingTag');
+             pagingTag.innerHTML = '';
+
+             curPage = Number(curPage);
+             const startPage = (curPage-2 > 0) ? curPage-2 : 1;
+             const endPage = (curPage+2 <= totalPage) ? curPage+2 : totalPage;
+
+             if (curPage > 1) {
+                 const innerPagingTag = document.createElement('li');
+                 innerPagingTag.classList.add('page-item');
+
+                 innerPagingTag.innerHTML = `<a class="page-link" href="/board/list?pageNum=1">First</a>`;
+                 pagingTag.appendChild(innerPagingTag);
+             }
+
+             for (let i = startPage; i <= endPage; i++) {
+                 const innerPagingTag = document.createElement('li');
+                 innerPagingTag.classList.add('page-item');
+
+                 innerPagingTag.innerHTML = `<a class="page-link" href="/board/list?pageNum=${i}">${i}</a>`;
+                 pagingTag.appendChild(innerPagingTag);
+             }
+
+             if (curPage < totalPage) {
+                 const innerPagingTag = document.createElement('li');
+                 innerPagingTag.classList.add('page-item');
+
+                 innerPagingTag.innerHTML = `<a class="page-link" href="/board/list?pageNum=${totalPage}">Last</a>`;
+                 pagingTag.appendChild(innerPagingTag);
+             }
          })
     </script>
 </body>

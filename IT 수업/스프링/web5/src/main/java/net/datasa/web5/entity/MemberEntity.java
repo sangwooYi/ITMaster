@@ -32,7 +32,7 @@ public class MemberEntity {
         boardList.add(board);
     }
 
-    @OneToMany(mappedBy = "reply", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<ReplyEntity> replyList = new ArrayList<>();
 
     private void addReply(ReplyEntity reply) {

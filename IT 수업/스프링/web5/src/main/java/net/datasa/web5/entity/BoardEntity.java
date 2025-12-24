@@ -33,7 +33,7 @@ public class BoardEntity {
     @JoinColumn(name="user_id", referencedColumnName = "user_id", nullable = false)
     private MemberEntity member;
 
-    @OneToMany(mappedBy = "reply", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
     private List<ReplyEntity> replyList = new ArrayList<>();
 
     private void addReply(ReplyEntity reply) {

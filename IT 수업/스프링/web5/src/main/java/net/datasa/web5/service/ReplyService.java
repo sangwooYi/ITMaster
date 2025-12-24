@@ -34,8 +34,6 @@ public class ReplyService {
                 () -> new EntityNotFoundException("해당 사용자가 없습니다."));
 
         ReplyEntity replyEntity = ReplyEntity.builder()
-                .boardNum(boardEntity.getBoardNum())
-                .userId(memberEntity.getUserId())
                 .board(boardEntity)
                 .member(memberEntity)
                 .content(replyDto.getContent())
@@ -57,12 +55,22 @@ public class ReplyService {
     }
 
     public List<ReplyDto> findAllByBoardNum(Integer boardNum) {
-        List<ReplyEntity> replyEntityList = replyRepository.findAllByBoardNum(boardNum);
 
+        BoardEntity boardEntity = boardRepository.findById(boardNum).orElseThrow(() -> new EntityNotFoundException("해당 게시판 정보가 없습니다."));
+
+        List<ReplyEntity> replyEntityList = replyRepository.findAllByBoard(boardEntity);
         List<ReplyDto> replyDtoList = new ArrayList<>();
         replyEntityList.forEach(entity -> replyDtoList.add(this.convertEntityToReplyDto(entity)));
 
         return replyDtoList;
+    }
+
+    public void deleteReply(Integer replyNum) {
+
+        ReplyEntity replyEntity = replyRepository.findById(replyNum).orElseThrow(() -> new EntityNotFoundException("댓글 없어"));
+
+        replyRepository.delete(replyEntity);
+
     }
 
     public ReplyDto convertEntityToReplyDto(ReplyEntity replyEntity) {
@@ -72,14 +80,8 @@ public class ReplyService {
         if (!ObjectUtils.isEmpty(replyEntity.getReplyNum())) {
             replyDto.setReplyNum(replyEntity.getReplyNum());
         }
-        if (!ObjectUtils.isEmpty(replyEntity.getBoardNum())) {
-            replyDto.setBoardNum(replyEntity.getBoardNum());
-        }
         if (!ObjectUtils.isEmpty(replyEntity.getContent())) {
             replyDto.setContent(replyEntity.getContent());
-        }
-        if (!ObjectUtils.isEmpty(replyEntity.getUserId())) {
-            replyDto.setUserId(replyEntity.getUserId());
         }
         if (!ObjectUtils.isEmpty(replyEntity.getCreateDate())) {
             replyDto.setCreateTime(replyEntity.getCreateDate());
