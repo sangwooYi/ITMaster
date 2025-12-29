@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<!-- xmlns:sec="http://www.thymeleaf.org/extras/spring-security" 추가해줘야
+시큐리티 인증정보를 제대로 받아올 수 있다! -->
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="https://i.namu.wiki/i/_gAD8r8NImxVgRK31XohV58sp3zmDZGi1u73QyTUgwWeg15Sve1n-5nQqcLctSugUvVmlqSOP1sJ6iLUWczcvg.webp">
+    <title>Aim Store</title>
+</head>
+<body>
+    <h2>[ Jquery 기본 문법 / 선택자 ]</h2>
+
+    <p id="text1">id 선택자</p>
+    <p class="text2">클래스 선택자</p>
+    <p class="text2 text3">클래스 다중 선택자</p>
+
+    <div id="div-exam">
+        <p>이 글자는 빨간색으로</p>
+        <span>
+            <p>이 글자는 원래 색 그대로</p>
+        </span>
+    </div>
+
+    <a th:href="@{/}">홈으로</a>
+    <!-- Jquery   -->
+    <script th:src="@{/js/jquery-3.7.1.min.js}"></script>
+    <script>
+        // document.addEventListener('DOMContentLoaded', () => {}); 랑 동일
+        // 정의된 함수 호출
+        function afterDOMLoading() {
+            console.log("정의 된 함수 호출");
+        }
+        $(document).ready(afterDOMLoading);
+
+        // 이건 익명 함수
+        $(document).ready(function() {
+            console.log("익명함수 사용");
+        });
+
+        // arrow function 형태 (자바 람다식 같은거)
+        $(document).ready(() => {
+            console.log("arrow function 사용");
+        });
+
+        // Jquery 선택자는 CSS 선택자와 사용방법이 거의 동일하다!
+        const $idTag = $('#text1');
+        // 그냥 name값만 전달하면 현재 css 값을 보여줌
+        console.log($idTag.css("color"));
+        // css 바꾸는법 css의 name, value 를 인자로 전달
+        $idTag.css("color", 'red');
+
+        const $classTag = $('.text2');
+        const $multiClassTag = $('.text2.text3');
+
+        console.log($idTag);
+        // .get() 통해 직접 접근도 가능
+        console.log($idTag.get(0));
+        console.log(`$idTag의 내부 텍스트 = ${$idTag.text()}`);
+        console.log($classTag);
+        console.log(`$classTag 내부 텍스트 = ${$classTag.text()}`);
+        console.log($multiClassTag);
+        console.log(`$multiClassTag 내부 텍스트 = ${$multiClassTag.text()}`);
+
+        // Jquery 선택자는 CSS 선택자와 사용방법이 거의 동일하다!
+        // 내부 태그 선택
+        $('#div-exam > p').css('color', 'red');
+
+        // .children() 이용해서 직접 접근
+        // .get(n) 에서 없는 n-th child 에 접근하려하면 undefined 반환함
+        console.log("=========== 직접 접근 ==========");
+        console.log($('#div-exam').children());
+        console.log($('#div-exam').children().get(0));
+        console.log($('#div-exam').children().get(1));
+
+        // css 아래처럼 한번에 지정도 가능
+        $('#div-exam').css({
+            'border': '1px solid blue',
+            'background-color': 'yellow'
+        });
+    </script>
+</body>
+</html>

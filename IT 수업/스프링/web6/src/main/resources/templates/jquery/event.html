@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<!-- xmlns:sec="http://www.thymeleaf.org/extras/spring-security" 추가해줘야
+시큐리티 인증정보를 제대로 받아올 수 있다! -->
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="https://i.namu.wiki/i/_gAD8r8NImxVgRK31XohV58sp3zmDZGi1u73QyTUgwWeg15Sve1n-5nQqcLctSugUvVmlqSOP1sJ6iLUWczcvg.webp">
+    <title>Aim Store</title>
+
+    <style>
+        button {
+            display: block;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h2>[ 이벤트 ]</h2>
+
+    <button id="button1" style="cursor: pointer">눌러봐요</button>
+    <button id="button2" style="cursor: pointer">버튼 2</button>
+    <button id="button3" style="cursor: pointer">버튼 3</button>
+    <button id="button4" style="cursor: pointer">버튼 4</button>
+    <button id="button5" style="cursor: pointer">버튼 5</button>
+    <a th:href="@{/}">홈으로</a>
+
+    <!-- Jquery   -->
+    <script th:src="@{/js/jquery-3.7.1.min.js}"></script>
+    <script>
+
+        const $button1Tag = $('#button1');
+
+        // addEventListener 가 .on 인것
+        // 당연히 .off 도 있다  ( removeEventListener 역할 )
+        $button1Tag.on('click', testButton)
+
+        $('#button2').on('click', function() {
+            alert("얘는 익명 함수 사용");
+            $button1Tag.off('click');
+        })
+        $('#button3').on('click', () => {
+            alert("얘는 arrow function 사용");
+            // 이렇게 함수 내부에서 이벤트를 붙일때는 반드시 뗀 후에 붙여줘야 함
+            // 안그러면 이벤트가 중복해서 붙어버린다!
+            $button1Tag.off('click').on('click', testButton);
+        })
+
+        $('#button4').on('click', () => {
+            // trigger 는 해당 태그에다가 특정 이벤트를 강제 발생시키는거
+            $button1Tag.trigger('click');
+        })
+
+        $('#button5').on('click', () => {
+            alert("3초 후에 버튼1 클릭 이벤트 호출");
+
+            setTimeout(() => {
+                $button1Tag.trigger('click');
+            }, 3*1000);
+        })
+
+        function testButton() {
+            alert("함수 실행 오케이");
+        }
+    </script>
+</body>
+</html>

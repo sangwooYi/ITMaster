@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<!-- xmlns:sec="http://www.thymeleaf.org/extras/spring-security" 추가해줘야
+시큐리티 인증정보를 제대로 받아올 수 있다! -->
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="https://i.namu.wiki/i/_gAD8r8NImxVgRK31XohV58sp3zmDZGi1u73QyTUgwWeg15Sve1n-5nQqcLctSugUvVmlqSOP1sJ6iLUWczcvg.webp">
+    <title>Aim Store</title>
+</head>
+<body>
+    <h2>[ Jquery / Ajax ]</h2>
+
+    <ul style="list-style-type: none">
+        <li>
+            <a th:href="@{/jquery/basic}">JQuery 기본문법, 선택자.</a>
+        </li>
+        <li>
+            <a th:href="@{/jquery/event}">이벤트 관련</a>
+        </li>
+    </ul>
+
+    <!-- Jquery   -->
+    <script th:src="@{/js/jquery-3.7.1.min.js}"></script>
+</body>
+</html>
