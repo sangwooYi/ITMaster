@@ -26,4 +26,14 @@ public class JqueryController {
     public String goEventExamPage() {
         return "jquery/eventExam";
     }
+
+    @GetMapping("/array")
+    public String goArrayPage() {
+        return "jquery/array";
+    }
+
+    @GetMapping("/modify")
+    public String goModifyPage() {
+        return "jquery/modify";
+    }
 }

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="https://i.namu.wiki/i/_gAD8r8NImxVgRK31XohV58sp3zmDZGi1u73QyTUgwWeg15Sve1n-5nQqcLctSugUvVmlqSOP1sJ6iLUWczcvg.webp">
+    <title>Aim Store</title>
+
+    <style>
+        button, img {
+            display: block;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h2>[ 문서객체 조작 ]</h2>
+
+    <h3><span id="text1">테스트111</span><p>p 태그요2222</p></h3>
+
+    <h3>안녕하세요 반가워요 <span>잘있어요 다시만나요</span></h3>
+
+    <button id="btn1">버튼 1</button>
+    <button id="btn2">버튼 2</button>
+    <button id="btn3">버튼 3</button>
+
+    <img src="/img/aimyon4.png" id="img1" height="250">
+
+    <a th:href="@{/}">홈으로</a>
+
+    <!-- Jquery   -->
+    <script th:src="@{/js/jquery-3.7.1.min.js}"></script>
+    <script>
+        $('#btn1').on('click', () => {
+            $('h3').each((idx, tag) => {
+
+                console.log(".text()");
+                console.log($(tag).text());
+
+                console.log(".html()");
+                console.log($(tag).html());
+            })
+        });
+
+        $('#btn2').on('click', () => {
+            const $text1 = $('#text1');
+            console.log($text1.text());
+            $text1.text('헤이');
+
+            setTimeout(() => {
+                $text1.html('');
+                $text1.html(`<b>안니니니</b>`);
+            }, 1000)
+        });
+
+        $('#btn3').on('click', () => {
+            console.log($('#img1').attr('src'));
+        })
+    </script>
+</body>
+</html>

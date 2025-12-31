@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<!-- xmlns:sec="http://www.thymeleaf.org/extras/spring-security" 추가해줘야
+시큐리티 인증정보를 제대로 받아올 수 있다! -->
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="https://i.namu.wiki/i/_gAD8r8NImxVgRK31XohV58sp3zmDZGi1u73QyTUgwWeg15Sve1n-5nQqcLctSugUvVmlqSOP1sJ6iLUWczcvg.webp">
+    <title>Aim Store</title>
+
+    <style>
+        button, img {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+    </style>
+</head>
+<body>
+    <h2>[ 배열과 반복문 ]</h2>
+
+    <button id="btn1">버튼 1</button>
+    <button id="btn2">버튼 2</button>
+    <button id="btn3">버튼 3</button>
+
+    <a th:href="@{/}">홈으로</a>
+
+    <!-- Jquery   -->
+    <script th:src="@{/js/jquery-3.7.1.min.js}"></script>
+    <script>
+
+        $('#btn1').on('click', () => {
+            const a = [];
+            a[3] = 3; // [undefined, undefined, undefined, 3] 이 된다. 이런거 주의
+            a.push(5)
+            console.log(a);
+
+            const b = [1, 2, 3, 4, 5, 6]
+            console.log(b);
+            // 인덱스 a 부터 , b직전까지 ( a <= < b 가범위 )
+            console.log(b.slice(2, 4));
+
+            console.log(".each() 사용");
+            // 사용법 주의!  인덱스, 요소 임
+            $(b).each((idx, el) => {
+                console.log(`b[${idx}] 의 요소 = ${el}`);
+            })
+
+            // reduce 사용법 두번째 인자는 생략하면 초깃값이 => (0 , '', [] 같은거 )
+            // 아니면 아래처럼 따로 설정하면 됨
+            const num1 = b.reduce((prev, num) => prev+num);        // 시작 값은 디폴트 초깃값인 0
+            const num2 = b.reduce((prev, num) => prev+num, 5);     // 처음 시작값이 5부터 시작
+            console.log(num1);
+            console.log(num2);
+        });
+
+        $('#btn2').on('click', () => {
+
+            let arr = [
+                {num: 1, id: 'aaa', title: '제목A'},
+                {num: 2, id: 'bbb', title: '제목B'},
+                {num: 3, id: 'ccc', title: '제목C'},
+                {num: 4, id: 'ddd', title: '제목D'},
+                {num: 5, id: 'eee', title: '제목E'}];
+
+            console.log("바닐라스크립트 .forEach()");
+            arr.forEach(el => console.log(el));
+
+            console.log("제이쿼리 .each()");
+            $(arr).each((idx, obj) => {
+                console.log(`${idx+1} 번째 obj`);
+                console.log(obj);
+            });
+
+        });
+
+        $('#btn3').on('click', () => {
+
+        });
+    </script>
+</body>
+</html>
