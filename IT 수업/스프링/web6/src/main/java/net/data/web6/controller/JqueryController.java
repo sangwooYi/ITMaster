@@ -21,4 +21,9 @@ public class JqueryController {
     public String goEventPage() {
         return "jquery/event";
     }
+
+    @GetMapping("/exam1")
+    public String goEventExamPage() {
+        return "jquery/eventExam";
+    }
 }

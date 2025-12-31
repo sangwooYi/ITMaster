@@ -9,9 +9,28 @@
     <title>Aim Store</title>
 
     <style>
-        button {
+        button, img {
             display: block;
             margin-bottom: 10px;
+        }
+
+        img {
+            cursor: pointer;
+        }
+
+        .scale-up {
+            animation-duration: 1s;
+            animation-name: scale-up;
+            animation-fill-mode: forwards;
+        }
+
+        @keyframes scale-up {
+            from {
+                transform: scale(1);
+            }
+            to {
+                transform: scale(1.2);
+            }
         }
     </style>
 </head>
@@ -23,6 +42,15 @@
     <button id="button3" style="cursor: pointer">버튼 3</button>
     <button id="button4" style="cursor: pointer">버튼 4</button>
     <button id="button5" style="cursor: pointer">버튼 5</button>
+
+    <img th:src="@{/img/aimyon1.png}" height="250" id="imgTag1" class="imgTag">
+    <img th:src="@{/img/aimyon2.png}" height="250" id="imgTag2" class="imgTag">
+
+    <div>
+        <p id="txt-len" style="margin-bottom: 0px">0 글자</p>
+        <input id="key-event">
+    </div>
+
     <a th:href="@{/}">홈으로</a>
 
     <!-- Jquery   -->
@@ -44,6 +72,9 @@
             // 이렇게 함수 내부에서 이벤트를 붙일때는 반드시 뗀 후에 붙여줘야 함
             // 안그러면 이벤트가 중복해서 붙어버린다!
             $button1Tag.off('click').on('click', testButton);
+
+            // 제이쿼리에서 만들어준 메서드 ! 얘는 장점이 알아서 .off().on() 을 해준다
+            //$button1Tag.click(testButton);
         })
 
         $('#button4').on('click', () => {
@@ -62,6 +93,35 @@
         function testButton() {
             alert("함수 실행 오케이");
         }
+        // arrow function 이랑 익명함수랑 차이는 this ! 주의하자!
+        $('.imgTag').on('mouseenter', (e) => {
+
+            // $(this) 하면 그냥 window 가 잡혀버린다.
+            const tag2 = $(e.target);
+            console.log(tag2);
+
+            tag2.addClass('scale-up');
+        })
+        $('.imgTag').on('mouseleave', (e) => {
+            const tag2 = $(e.target);
+            tag2.removeClass('scale-up')
+        })
+
+        $('.imgTag').on('mouseenter', function() {
+
+            // 여기서는 이벤트 발생한 객체를 잘 잡아온다
+            const tag = $(this);
+            console.log(tag);
+        })
+
+        // keydown 은 누를때, keyup 은 떼는 순가 발생
+        $('#key-event').on('keyup', (e) => {
+
+            const inputTxt = $(e.target).val().trim();
+
+            $('#txt-len').text(`${inputTxt.length} 글자`);
+
+        });
     </script>
 </body>
 </html>

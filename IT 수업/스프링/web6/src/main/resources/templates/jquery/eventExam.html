@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<!-- xmlns:sec="http://www.thymeleaf.org/extras/spring-security" 추가해줘야
+시큐리티 인증정보를 제대로 받아올 수 있다! -->
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="https://i.namu.wiki/i/_gAD8r8NImxVgRK31XohV58sp3zmDZGi1u73QyTUgwWeg15Sve1n-5nQqcLctSugUvVmlqSOP1sJ6iLUWczcvg.webp">
+    <title>Aim Store</title>
+
+    <style>
+        img {
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h2>[ 예제 ]</h2>
+
+    <div id="exam1">
+        <p>1. 이미지의 크기 변경 ( 클릭할 때 마다 10픽셀 증가 )</p>
+        <img th:src="@{/img/aimyon1.png}" height="150">
+    </div>
+    <div id="exam2">
+        <p>2. 이미지 바꾸기 (클릭할 때마다 준비한 이미지를 교대로 보여준다.)</p>
+        <img th:src="@{/img/aimyon1.png}" height="150">
+    </div>
+    <div id="exam3">
+        <p>3. 이미지 바꾸기 (클릭한 후에 일정시간마다 이미지가 자동으로 교체)</p>
+        <img th:src="@{/img/aimyon1.png}" height="150">
+    </div>
+    <div id="exam4">
+        <p>4. 윈도우의 위치 이동시키기</p>
+        <button id="btn1">창 열기</button>
+    </div>
+
+    <a th:href="@{/}">홈으로</a>
+
+    <!-- Jquery   -->
+    <script th:src="@{/js/jquery-3.7.1.min.js}"></script>
+    <script>
+
+        $('#exam1').on('click', () => {
+            // $ 로  감싸줘야 제이쿼리 이벤트 적용이 가능하다 주의!
+            const $imgTag = $($('#exam1').children().get(1));
+            $imgTag.attr('height', Number($imgTag.attr('height'))+10);
+        })
+
+        let cnt = 1;
+        $('#exam2').on('click', () => {
+            const $imgTag = $($('#exam2').children().get(1));
+
+            cnt++;
+
+            const tagNum = cnt%9 == 0 ? 9 : cnt%9;
+            $imgTag.attr('src', `/img/aimyon${tagNum}.png`);
+        })
+
+        let cnt2 = 1;
+        let isClick = false;
+        $('#exam3').on('click', () => {
+            if (isClick) {
+                return;
+            }
+            const $imgTag = $($('#exam3').children().get(1));
+            setInterval(() => {
+                isClick = true;
+                cnt2++;
+                const tagNum = cnt2%9 == 0 ? 9 : cnt2%9;
+                $imgTag.attr('src', `/img/aimyon${tagNum}.png`);
+            }, 1000);
+        })
+
+        $('#btn1').on('click', () => {
+            const popup = window.open("/", "_blank", "width=400, height=500");
+            let curPos = 0;
+            let isAdd = true;
+            if (popup) {
+                setInterval(() => {
+                    // 바꿔줘야함
+                    if (popup.screenX == 1120) {
+                        isAdd = false;
+                    }
+                    if (popup.screenX == 0) {
+                        isAdd = true;
+                    }
+                    if (isAdd) {
+                        curPos += 100;
+                    } else {
+                        curPos -= 100;
+                    }
+
+                    popup.moveTo(curPos, 0);
+                }, 500);
+            }
+        })
+
+    </script>
+</body>
+</html>
